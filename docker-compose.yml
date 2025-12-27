@@ -1,12 +1,12 @@
 services:
-  cli:
+  php-cli:
     container_name: cli
     build:
       context: .
       dockerfile: docker/php/Dockerfile
     volumes:
       - .:/app
-    working_dir: /app
+    working_dir: /app/symfony
     environment:
       PHP_IDE_CONFIG: "serverName=symfony"
   php-web:
@@ -16,7 +16,7 @@ services:
       dockerfile: docker/php/Dockerfile
     volumes:
       - .:/app
-    working_dir: /app
+    working_dir: /app/symfony
     command: php -S 0.0.0.0:8000 -t web
     ports:
       - "8000:8000"
