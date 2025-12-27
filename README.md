@@ -52,6 +52,64 @@ The goal is **not** to recreate a full billing system, but to demonstrate:
 | Oracle   | 1521 | Oracle XE database       |
 | MailHog  | 8025 | Email testing UI         |
 
+### Testing Database Connection
+
+#### 1. Check Oracle Container Health
+
+First, ensure the Oracle container is healthy:
+
+```bash
+docker-compose ps
+```
+
+The `oracle-xe` container should show as `healthy`. Oracle can take 1-2 minutes to initialize on first start.
+
+#### 2. Test Doctrine Connection
+
+Run the Doctrine schema validation command:
+
+```bash
+docker-compose exec php-cli bin/console doctrine:schema:validate
+```
+
+If the connection is successful, you'll see output about the mapping status.
+
+#### 3. Test with a Simple Query
+
+Run a raw SQL query through Doctrine:
+
+```bash
+docker-compose exec php-cli bin/console doctrine:query:sql "SELECT 1 FROM DUAL"
+```
+
+A successful connection returns:
+
+```
+array(1) {
+  [0]=>
+  array(1) {
+    [1]=>
+    string(1) "1"
+  }
+}
+```
+
+#### 4. View Database Schema
+
+List existing tables:
+
+```bash
+docker-compose exec php-cli bin/console doctrine:schema:update --dump-sql
+```
+
+#### Troubleshooting
+
+| Issue | Solution |
+|-------|----------|
+| Connection refused | Wait for Oracle to fully start (`docker logs oracle-xe`) |
+| ORA-12541: No listener | Oracle is still initializing, wait 1-2 minutes |
+| Authentication failed | Check `DATABASE_USER` and `DATABASE_PASSWORD` in `docker-compose.yml` |
+
 ## Documentation
 
 See [docs/index.md](docs/index.md) for detailed design documentation.
