@@ -1,77 +1,61 @@
-Symfony Standard Edition
-========================
+# SignalRite
 
-**WARNING**: This distribution does not support Symfony 4. See the
-[Installing & Setting up the Symfony Framework][15] page to find a replacement
-that fits you best.
+Mini Revenue Integrity & Compliance Analyzer
 
-Welcome to the Symfony Standard Edition - a fully-functional Symfony
-application that you can use as the skeleton for your new applications.
+## Purpose
 
-For details on how to download and get started with Symfony, see the
-[Installation][1] chapter of the Symfony Documentation.
+SignalRite is a **small, focused backend service** that simulates how healthcare financial systems identify **revenue leakage, compliance risk, and billing anomalies** using **rules-driven analysis** and **explainable outputs**.
 
-What's inside?
---------------
+The goal is **not** to recreate a full billing system, but to demonstrate:
+- How healthcare charge data is evaluated
+- How rules and compliance logic are applied
+- How actionable financial insights are produced
 
-The Symfony Standard Edition is configured with the following defaults:
+## Tech Stack
 
-  * An AppBundle you can use to start coding;
+- **Symfony 3**
+- **PHP 7.2**
+- **Doctrine ORM**
+- **Oracle Database**
 
-  * Twig as the only configured template engine;
+## Getting Started
 
-  * Doctrine ORM/DBAL;
+### Prerequisites
 
-  * Swiftmailer;
+- Docker and Docker Compose
 
-  * Annotations enabled for everything.
+### Installation
 
-It comes pre-configured with the following bundles:
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/your-org/signal-rite.git
+   cd signal-rite
+   ```
 
-  * **FrameworkBundle** - The core Symfony framework bundle
+2. Start the services:
+   ```bash
+   docker-compose up -d
+   ```
 
-  * [**SensioFrameworkExtraBundle**][6] - Adds several enhancements, including
-    template and routing annotation capability
+3. Install dependencies:
+   ```bash
+   docker-compose exec php-cli composer install
+   ```
 
-  * [**DoctrineBundle**][7] - Adds support for the Doctrine ORM
+4. Access the application at `http://localhost:8000`
 
-  * [**TwigBundle**][8] - Adds support for the Twig templating engine
+### Services
 
-  * [**SecurityBundle**][9] - Adds security by integrating Symfony's security
-    component
+| Service  | Port | Description              |
+|----------|------|--------------------------|
+| Web      | 8000 | Symfony application      |
+| Oracle   | 1521 | Oracle XE database       |
+| MailHog  | 8025 | Email testing UI         |
 
-  * [**SwiftmailerBundle**][10] - Adds support for Swiftmailer, a library for
-    sending emails
+## Documentation
 
-  * [**MonologBundle**][11] - Adds support for Monolog, a logging library
+See [docs/index.md](docs/index.md) for detailed design documentation.
 
-  * **WebProfilerBundle** (in dev/test env) - Adds profiling functionality and
-    the web debug toolbar
+## License
 
-  * **SensioDistributionBundle** (in dev/test env) - Adds functionality for
-    configuring and working with Symfony distributions
-
-  * [**SensioGeneratorBundle**][13] (in dev env) - Adds code generation
-    capabilities
-
-  * [**WebServerBundle**][14] (in dev env) - Adds commands for running applications
-    using the PHP built-in web server
-
-  * **DebugBundle** (in dev/test env) - Adds Debug and VarDumper component
-    integration
-
-All libraries and bundles included in the Symfony Standard Edition are
-released under the MIT or BSD license.
-
-Enjoy!
-
-[1]:  https://symfony.com/doc/3.4/setup.html
-[6]:  https://symfony.com/doc/current/bundles/SensioFrameworkExtraBundle/index.html
-[7]:  https://symfony.com/doc/3.4/doctrine.html
-[8]:  https://symfony.com/doc/3.4/templating.html
-[9]:  https://symfony.com/doc/3.4/security.html
-[10]: https://symfony.com/doc/3.4/email.html
-[11]: https://symfony.com/doc/3.4/logging.html
-[13]: https://symfony.com/doc/current/bundles/SensioGeneratorBundle/index.html
-[14]: https://symfony.com/doc/current/setup/built_in_web_server.html
-[15]: https://symfony.com/doc/current/setup.html
+Released under the MIT license.
