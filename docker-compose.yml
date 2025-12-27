@@ -6,9 +6,20 @@ services:
       dockerfile: docker/php/Dockerfile
     volumes:
       - .:/app
-    working_dir: /app/symfony
+    working_dir: /app
     environment:
       PHP_IDE_CONFIG: "serverName=symfony"
+      DATABASE_HOST: oracle
+      DATABASE_PORT: 1521
+      DATABASE_NAME: XEPDB1
+      DATABASE_USER: app
+      DATABASE_PASSWORD: app
+      MAILER_TRANSPORT: smtp
+      MAILER_HOST: mailhog
+      MAILER_PORT: 1025
+      MAILER_USER: ""
+      MAILER_PASSWORD: ""
+      APP_SECRET: ThisTokenIsNotSoSecretChangeIt
   php-web:
     container_name: web
     build:
@@ -16,12 +27,23 @@ services:
       dockerfile: docker/php/Dockerfile
     volumes:
       - .:/app
-    working_dir: /app/symfony
-    command: php -S 0.0.0.0:8000 -t web
+    working_dir: /app
+    command: php -S 0.0.0.0:8000 -t web web/app_dev.php
     ports:
       - "8000:8000"
     environment:
       PHP_IDE_CONFIG: "serverName=symfony"
+      DATABASE_HOST: oracle
+      DATABASE_PORT: 1521
+      DATABASE_NAME: XEPDB1
+      DATABASE_USER: app
+      DATABASE_PASSWORD: app
+      MAILER_TRANSPORT: smtp
+      MAILER_HOST: mailhog
+      MAILER_PORT: 1025
+      MAILER_USER: ""
+      MAILER_PASSWORD: ""
+      APP_SECRET: ThisTokenIsNotSoSecretChangeIt
 
   oracle:
     image: gvenzl/oracle-xe:21-slim
@@ -47,14 +69,12 @@ services:
     container_name: mailhog
     restart: always
     environment:
-      MH_AUTH_FILE: /mailhog.auth
       MH_MAILDIR_PATH: /data
       MH_STORAGE: maildir
     volumes:
-      - ./mailhog.auth:/mailhog.auth:ro
       - ./data:/data:rw
     ports:
-      - "1025:1025" #127.0.0.1:1025:1025
+      - "1025:1025"
       - "8025:8025"
 volumes:
   oracle-data:
