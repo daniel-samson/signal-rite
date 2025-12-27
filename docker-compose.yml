@@ -1,0 +1,24 @@
+services:
+  cli:
+    container_name: cli
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    volumes:
+      - .:/app
+    working_dir: /app
+    environment:
+      PHP_IDE_CONFIG: "serverName=symfony"
+  php-web:
+    container_name: web
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    volumes:
+      - .:/app
+    working_dir: /app
+    command: php -S 0.0.0.0:8000 -t web
+    ports:
+      - "8000:8000"
+    environment:
+      PHP_IDE_CONFIG: "serverName=symfony"
