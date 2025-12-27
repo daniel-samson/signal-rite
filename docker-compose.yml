@@ -12,8 +12,8 @@ services:
       DATABASE_HOST: oracle
       DATABASE_PORT: 1521
       DATABASE_NAME: XEPDB1
-      DATABASE_USER: app
-      DATABASE_PASSWORD: app
+      DATABASE_USER: symfony
+      DATABASE_PASSWORD: symfony
       MAILER_TRANSPORT: smtp
       MAILER_HOST: mailhog
       MAILER_PORT: 1025
@@ -36,8 +36,8 @@ services:
       DATABASE_HOST: oracle
       DATABASE_PORT: 1521
       DATABASE_NAME: XEPDB1
-      DATABASE_USER: app
-      DATABASE_PASSWORD: app
+      DATABASE_USER: symfony
+      DATABASE_PASSWORD: symfony
       MAILER_TRANSPORT: smtp
       MAILER_HOST: mailhog
       MAILER_PORT: 1025
