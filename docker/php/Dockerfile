@@ -47,6 +47,7 @@ COPY docker/php/php.ini /usr/local/etc/php/php.ini
 WORKDIR /app
 
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
- && php composer-setup.php --1 \
+ && php composer-setup.php --2.2 \
  && mv composer.phar /usr/local/bin/composer \
  && rm composer-setup.php
+

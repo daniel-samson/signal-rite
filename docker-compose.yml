@@ -1,6 +1,5 @@
 services:
   php-cli:
-    container_name: cli
     build:
       context: .
       dockerfile: docker/php/Dockerfile
@@ -44,7 +43,6 @@ services:
       MAILER_USER: ""
       MAILER_PASSWORD: ""
       APP_SECRET: ThisTokenIsNotSoSecretChangeIt
-
   oracle:
     image: gvenzl/oracle-xe:21-slim
     container_name: oracle-xe

@@ -8,7 +8,29 @@
       "Bash(docker exec:*)",
       "Bash(curl:*)",
       "Bash(docker logs:*)",
-      "Bash(dir:*)"
+      "Bash(dir:*)",
+      "Bash(gh auth:*)",
+      "Bash(where:*)",
+      "Bash(\"C:\\\\Program Files\\\\GitHub CLI\\\\gh.exe\" auth status)",
+      "Bash(\"C:\\\\Program Files\\\\GitHub CLI\\\\gh.exe\" repo create signal-rite --public --source=. --remote=origin --description \"Mini Revenue Integrity & Compliance Analyzer\")",
+      "Bash(git push:*)",
+      "Bash(\"C:\\\\Program Files\\\\GitHub CLI\\\\gh.exe\" issue create --title \"Project Setup & Environment\" --label \"enhancement\" --body-file \"docs/tickets/01-project-setup.md\")",
+      "Bash(\"C:\\\\Program Files\\\\GitHub CLI\\\\gh.exe\" issue create --title \"Core Domain Entities\" --label \"enhancement\" --body-file \"docs/tickets/02-core-domain-entities.md\")",
+      "Bash(\"C:\\\\Program Files\\\\GitHub CLI\\\\gh.exe\" issue create --title \"Patient & Department Entities\" --label \"enhancement\" --body-file \"docs/tickets/03-patient-department.md\")",
+      "Bash(\"C:\\\\Program Files\\\\GitHub CLI\\\\gh.exe\" issue create --title \"Diagnosis Many-to-Many Relationship\" --label \"enhancement\" --body-file \"docs/tickets/04-diagnosis-m2m.md\")",
+      "Bash(\"C:\\\\Program Files\\\\GitHub CLI\\\\gh.exe\" issue create --title \"Rules Engine\" --label \"enhancement\" --body-file \"docs/tickets/05-rules-engine.md\")",
+      "Bash(\"C:\\\\Program Files\\\\GitHub CLI\\\\gh.exe\" issue create --title \"Risk Analyzer & Insights\" --label \"enhancement\" --body-file \"docs/tickets/06-risk-analyzer.md\")",
+      "Bash(\"C:\\\\Program Files\\\\GitHub CLI\\\\gh.exe\" issue create --title \"API Endpoints\" --label \"enhancement\" --body-file \"docs/tickets/07-api-endpoints.md\")",
+      "Bash(\"C:\\\\Program Files\\\\GitHub CLI\\\\gh.exe\" issue create --title \"Oracle SQL & JOIN Practice\" --label \"enhancement\" --body-file \"docs/tickets/08-oracle-queries.md\")",
+      "Bash(\"C:\\\\Program Files\\\\GitHub CLI\\\\gh.exe\" issue create --title \"Charge-Diagnosis Many-to-Many Relationship\" --label \"enhancement\" --body-file \"docs/tickets/09-charge-diagnosis.md\")",
+      "Bash(\"C:\\\\Program Files\\\\GitHub CLI\\\\gh.exe\" issue create --title \"Frontend Overview \\(Twig\\)\" --label \"enhancement\" --body-file \"docs/tickets/01-frontend-overview.md\")",
+      "Bash(\"C:\\\\Program Files\\\\GitHub CLI\\\\gh.exe\" issue create --title \"Dashboard Page Design\" --label \"enhancement\" --body-file \"docs/tickets/02-dashboard.md\")",
+      "Bash(\"C:\\\\Program Files\\\\GitHub CLI\\\\gh.exe\" issue create --title \"Charge List Page\" --label \"enhancement\" --body-file \"docs/tickets/03-charge-list.md\")",
+      "Bash(\"C:\\\\Program Files\\\\GitHub CLI\\\\gh.exe\" issue create --title \"Charge Detail Page\" --label \"enhancement\" --body-file \"docs/tickets/04-charge-detail.md\")",
+      "Bash(\"C:\\\\Program Files\\\\GitHub CLI\\\\gh.exe\" issue create --title \"Insight List Page\" --label \"enhancement\" --body-file \"docs/tickets/05-insight-list.md\")",
+      "Bash(\"C:\\\\Program Files\\\\GitHub CLI\\\\gh.exe\" issue create --title \"Rule List Page\" --label \"enhancement\" --body-file \"docs/tickets/06-rule-list.md\")",
+      "Bash(\"C:\\\\Program Files\\\\GitHub CLI\\\\gh.exe\" issue create --title \"Base Layout \\(Twig\\)\" --label \"enhancement\" --body-file \"docs/tickets/07-base-layout.md\")",
+      "Bash(\"C:\\\\Program Files\\\\GitHub CLI\\\\gh.exe\" issue create --title \"UI Conventions\" --label \"enhancement\" --body-file \"docs/tickets/08-ui-conventions.md\")"
     ]
   }
 }
