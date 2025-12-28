@@ -1,0 +1,26 @@
+AppBundle\Entity\Rule:
+    type: entity
+    table: null
+    repositoryClass: AppBundle\Repository\RuleRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        type:
+            type: string
+            length: '20'
+        description:
+            type: string
+            length: 255
+        definitionYaml:
+            type: text
+            column: definition_yaml
+        active:
+            type: boolean
+        createdAt:
+            type: datetime
+            column: created_at
+    lifecycleCallbacks: {  }

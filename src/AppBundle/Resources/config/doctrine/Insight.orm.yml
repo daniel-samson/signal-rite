@@ -1,0 +1,25 @@
+AppBundle\Entity\Insight:
+    type: entity
+    table: null
+    repositoryClass: AppBundle\Repository\InsightRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        severity:
+            type: string
+            length: '10'
+        message:
+            type: string
+            length: 255
+        revenueAtRiskInCents:
+            type: string
+            length: 255
+            column: revenue_at_risk_in_cents
+        createdAt:
+            type: datetime
+            column: created_at
+    lifecycleCallbacks: {  }

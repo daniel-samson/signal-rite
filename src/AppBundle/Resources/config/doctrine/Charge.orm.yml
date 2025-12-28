@@ -1,0 +1,29 @@
+AppBundle\Entity\Charge:
+    type: entity
+    table: null
+    repositoryClass: AppBundle\Repository\ChargeRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        procedureCode:
+            type: string
+            length: '50'
+            column: procedure_code
+        chargeAmountCents:
+            type: integer
+            column: charge_amount_cents
+        payerType:
+            type: string
+            length: '20'
+            column: payer_type
+        serviceDate:
+            type: date
+            column: service_date
+        createdAt:
+            type: datetime
+            column: created_at
+    lifecycleCallbacks: {  }
