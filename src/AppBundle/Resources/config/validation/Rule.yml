@@ -1,0 +1,7 @@
+AppBundle\Entity\Charge:
+  properties:
+    type:
+      - NotBlank: ~
+      - AppBundle\Validator\Constraints\EnumValue:
+          enumClass: AppBundle\Enums\RuleTypeEnum
+          message: 'Invalid type.'
