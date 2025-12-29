@@ -10,7 +10,7 @@ services:
       PHP_IDE_CONFIG: "serverName=symfony"
       DATABASE_HOST: oracle
       DATABASE_PORT: 1521
-      DATABASE_NAME: XEPDB1
+      DATABASE_NAME: symfony
       DATABASE_USER: symfony
       DATABASE_PASSWORD: symfony
       MAILER_TRANSPORT: smtp
@@ -34,7 +34,7 @@ services:
       PHP_IDE_CONFIG: "serverName=symfony"
       DATABASE_HOST: oracle
       DATABASE_PORT: 1521
-      DATABASE_NAME: XEPDB1
+      DATABASE_NAME: symfony
       DATABASE_USER: symfony
       DATABASE_PASSWORD: symfony
       MAILER_TRANSPORT: smtp
@@ -48,9 +48,9 @@ services:
     container_name: oracle-xe
     environment:
       ORACLE_PASSWORD: oracle
-      ORACLE_DATABASE: XEPDB1
-      APP_USER: app
-      APP_USER_PASSWORD: app
+      ORACLE_DATABASE: symfony
+      APP_USER: symfony
+      APP_USER_PASSWORD: symfony
     ports:
       - "1521:1521"
       - "5500:5500"

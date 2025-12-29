@@ -28,9 +28,6 @@ AppBundle\Entity\Charge:
             column: created_at
     lifecycleCallbacks: {  }
     oneToMany:
-        insight:
+        insights:
             targetEntity: AppBundle\Entity\Insight
-            inversedBy: charges
-            joinColumn:
-                name: insight_id
-                referencedColumnName: id
+            mappedBy: charge

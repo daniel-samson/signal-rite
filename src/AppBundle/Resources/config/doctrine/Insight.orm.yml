@@ -23,10 +23,16 @@ AppBundle\Entity\Insight:
             type: datetime
             column: created_at
     lifecycleCallbacks: {  }
-    oneToMany:
-        charges:
+    manyToOne:
+        charge:
             targetEntity: AppBundle\Entity\Charge
-            mappedBy:
-        riles:
+            inversedBy: insights
+            joinColumn:
+                name: charge_id
+                referencedColumnName: id
+        rule:
             targetEntity: AppBundle\Entity\Rule
-            mappedBy: rule
+            inversedBy: insights
+            joinColumn:
+                name: rule_id
+                referencedColumnName: id

@@ -34,6 +34,16 @@ class Insight
      */
     private $createdAt;
 
+    /**
+     * @var Charge
+     */
+    private $charge;
+
+    /**
+     * @var Rule
+     */
+    private $rule;
+
 
     /**
      * Get id.
@@ -140,5 +150,53 @@ class Insight
     public function getCreatedAt(): \DateTime
     {
         return $this->createdAt;
+    }
+
+    /**
+     * Set charge.
+     *
+     * @param Charge|null $charge
+     *
+     * @return Insight
+     */
+    public function setCharge(Charge $charge = null): self
+    {
+        $this->charge = $charge;
+
+        return $this;
+    }
+
+    /**
+     * Get charge.
+     *
+     * @return Charge|null
+     */
+    public function getCharge()
+    {
+        return $this->charge;
+    }
+
+    /**
+     * Set rule.
+     *
+     * @param Rule|null $rule
+     *
+     * @return Insight
+     */
+    public function setRule(Rule $rule = null): self
+    {
+        $this->rule = $rule;
+
+        return $this;
+    }
+
+    /**
+     * Get rule.
+     *
+     * @return Rule|null
+     */
+    public function getRule()
+    {
+        return $this->rule;
     }
 }

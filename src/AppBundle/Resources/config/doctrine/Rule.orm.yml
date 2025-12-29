@@ -25,9 +25,6 @@ AppBundle\Entity\Rule:
             column: created_at
     lifecycleCallbacks: {  }
     oneToMany:
-        insight:
+        insights:
             targetEntity: AppBundle\Entity\Insight
-            inversedBy: rules
-            joinColumn:
-                name: rule_id
-                referencedColumnName: id
+            mappedBy: rule

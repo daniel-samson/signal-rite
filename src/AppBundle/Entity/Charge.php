@@ -4,6 +4,8 @@ namespace AppBundle\Entity;
 
 use AppBundle\Enums\ChargePayerTypeEnum;
 use AppBundle\Enums\ChargeProcedureCodeEnum;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 
 /**
@@ -41,6 +43,19 @@ class Charge
      * @var \DateTime Record creation time
      */
     private $createdAt;
+
+    /**
+     * @var Collection|Insight[]
+     */
+    private $insights;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->insights = new ArrayCollection();
+    }
 
 
     /**
@@ -181,5 +196,50 @@ class Charge
     public function getCreatedAt(): \DateTime
     {
         return $this->createdAt;
+    }
+
+    /**
+     * Add insight.
+     *
+     * @param Insight $insight
+     *
+     * @return Charge
+     */
+    public function addInsight(Insight $insight): self
+    {
+        if (!$this->insights->contains($insight)) {
+            $this->insights[] = $insight;
+            $insight->setCharge($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Remove insight.
+     *
+     * @param Insight $insight
+     *
+     * @return Charge
+     */
+    public function removeInsight(Insight $insight): self
+    {
+        if ($this->insights->removeElement($insight)) {
+            if ($insight->getCharge() === $this) {
+                $insight->setCharge(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * Get insights.
+     *
+     * @return Collection|Insight[]
+     */
+    public function getInsights(): Collection
+    {
+        return $this->insights;
     }
 }

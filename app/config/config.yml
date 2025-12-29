@@ -42,6 +42,7 @@ doctrine:
         driver: oci8
         host: '%database_host%'
         port: '%database_port%'
+        service: true
         dbname: '%database_name%'
         user: '%database_user%'
         password: '%database_password%'
@@ -51,6 +52,13 @@ doctrine:
         auto_generate_proxy_classes: '%kernel.debug%'
         naming_strategy: doctrine.orm.naming_strategy.underscore
         auto_mapping: true
+
+# Doctrine Migrations Configuration
+doctrine_migrations:
+    dir_name: "%kernel.project_dir%/app/DoctrineMigrations"
+    namespace: Application\Migrations
+    table_name: migration_versions
+    name: Application Migrations
 
 # Swiftmailer Configuration
 swiftmailer:

@@ -3,6 +3,8 @@
 namespace AppBundle\Entity;
 
 use AppBundle\Enums\RuleTypeEnum;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * Rule
@@ -38,6 +40,19 @@ class Rule
      * @var \DateTime
      */
     private $createdAt;
+
+    /**
+     * @var Collection|Insight[]
+     */
+    private $insights;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->insights = new ArrayCollection();
+    }
 
 
     /**
@@ -168,5 +183,50 @@ class Rule
     public function getCreatedAt(): \DateTime
     {
         return $this->createdAt;
+    }
+
+    /**
+     * Add insight.
+     *
+     * @param Insight $insight
+     *
+     * @return Rule
+     */
+    public function addInsight(Insight $insight): self
+    {
+        if (!$this->insights->contains($insight)) {
+            $this->insights[] = $insight;
+            $insight->setRule($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Remove insight.
+     *
+     * @param Insight $insight
+     *
+     * @return Rule
+     */
+    public function removeInsight(Insight $insight): self
+    {
+        if ($this->insights->removeElement($insight)) {
+            if ($insight->getRule() === $this) {
+                $insight->setRule(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * Get insights.
+     *
+     * @return Collection|Insight[]
+     */
+    public function getInsights(): Collection
+    {
+        return $this->insights;
     }
 }
