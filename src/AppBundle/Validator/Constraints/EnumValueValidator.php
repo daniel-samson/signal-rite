@@ -2,12 +2,17 @@
 
 namespace AppBundle\Validator\Constraints;
 
+
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
 class EnumValueValidator extends ConstraintValidator
 {
-    public function validate($value, Constraint $constraint)
+    /**
+     * @param mixed $value
+     * @param EnumValue $constraint
+     */
+    public function validate($value, Constraint $constraint): void
     {
         if ($value === null || $value === '') {
             return;

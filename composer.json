@@ -47,6 +47,10 @@
         ],
         "post-update-cmd": [
             "@symfony-scripts"
+        ],
+        "lint": [
+            "vendor/bin/phpstan analyse",
+            "vendor/bin/phpcs"
         ]
     },
     "config": {
