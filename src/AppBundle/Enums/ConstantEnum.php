@@ -6,6 +6,12 @@ namespace AppBundle\Enums;
 
 use ReflectionClass;
 
+/**
+ * Base Abstract Enum class
+ *
+ * Provides enum-like functionality for PHP 7.2+
+ * Compatible with modern enum patterns.
+ */
 abstract class ConstantEnum
 {
     /**
@@ -14,6 +20,73 @@ abstract class ConstantEnum
      * @var array<string, array{keyToValue: array<string,string>, valueToKey: array<string,string>}>
      */
     private static $cache = [];
+
+    /**
+     * Prevent instantiation.
+     */
+    private function __construct()
+    {
+    }
+
+    /**
+     * Prevent setting properties (immutability).
+     *
+     * @param string $name
+     * @param mixed $value
+     * @throws \LogicException
+     */
+    public function __set($name, $value)
+    {
+        throw new \LogicException(sprintf('Cannot modify enum property "%s".', $name));
+    }
+
+    /**
+     * Get a constant value by name.
+     *
+     * @param string $name
+     * @return string|null
+     */
+    public function __get($name)
+    {
+        return static::getValue($name);
+    }
+
+    /**
+     * Allow static method calls to retrieve constant values.
+     * Example: MyEnum::SOME_KEY() returns the value of SOME_KEY.
+     *
+     * @param string $name
+     * @param array<mixed> $arguments
+     * @return string
+     * @throws \InvalidArgumentException
+     */
+    public static function __callStatic($name, $arguments)
+    {
+        $value = static::getValue($name);
+
+        if ($value === null) {
+            throw new \InvalidArgumentException(sprintf(
+                'Unknown enum key "%s" in %s.',
+                $name,
+                static::class
+            ));
+        }
+
+        return $value;
+    }
+
+    /**
+     * Get the value of a constant by its key name.
+     *
+     * @param string $key
+     * @return string|null
+     */
+    public static function getValue(string $key): ?string
+    {
+        self::init(static::class);
+
+        return self::$cache[static::class]['keyToValue'][$key] ?? null;
+    }
 
     /**
      * Check whether a constant key exists.
