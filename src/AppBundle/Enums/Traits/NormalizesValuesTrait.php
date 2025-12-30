@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AppBundle\Enums;
+namespace AppBundle\Enums\Traits;
 
 /**
  * Provides value normalization for enums with uppercase string values.

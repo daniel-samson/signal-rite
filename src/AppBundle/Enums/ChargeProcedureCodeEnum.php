@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Enums;
 
+use AppBundle\Enums\Traits\NormalizesValuesTrait;
 use PhpCompatible\Enum\Enum;
 use PhpCompatible\Enum\Value;
 
