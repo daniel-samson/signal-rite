@@ -64,6 +64,16 @@ class Rule
     }
 
     /**
+     * Get type.
+     *
+     * @return string
+     */
+    public function getType(): string
+    {
+        return $this->type;
+    }
+
+    /**
      * Set type.
      *
      * @param string $type
@@ -78,13 +88,13 @@ class Rule
     }
 
     /**
-     * Get type.
+     * Get description.
      *
      * @return string
      */
-    public function getType(): string
+    public function getDescription(): string
     {
-        return $this->type;
+        return $this->description;
     }
 
     /**
@@ -102,13 +112,13 @@ class Rule
     }
 
     /**
-     * Get description.
+     * Get definitionYaml.
      *
      * @return string
      */
-    public function getDescription(): string
+    public function getDefinitionYaml(): string
     {
-        return $this->description;
+        return $this->definitionYaml;
     }
 
     /**
@@ -126,13 +136,13 @@ class Rule
     }
 
     /**
-     * Get definitionYaml.
+     * Get active.
      *
-     * @return string
+     * @return bool
      */
-    public function getDefinitionYaml(): string
+    public function getActive(): bool
     {
-        return $this->definitionYaml;
+        return $this->active;
     }
 
     /**
@@ -147,16 +157,6 @@ class Rule
         $this->active = $active;
 
         return $this;
-    }
-
-    /**
-     * Get active.
-     *
-     * @return bool
-     */
-    public function getActive(): bool
-    {
-        return $this->active;
     }
 
     /**

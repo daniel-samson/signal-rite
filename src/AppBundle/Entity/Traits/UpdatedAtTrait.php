@@ -2,25 +2,28 @@
 
 namespace AppBundle\Entity\Traits;
 
+use DateTimeImmutable;
+use DateTimeZone;
+
 trait UpdatedAtTrait
 {
     /**
-     * @var \DateTimeImmutable|null
+     * @var DateTimeImmutable|null
      */
     protected $updatedAt;
 
-    public function getUpdatedAt(): ?\DateTimeImmutable
+    public function getUpdatedAt(): ?DateTimeImmutable
     {
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(\DateTimeImmutable $updatedAt): void
+    public function setUpdatedAt(DateTimeImmutable $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
     }
 
     public function onPreUpdateAt(): void
     {
-        $this->updatedAt = new \DateTimeImmutable('now', new \DateTimeZone('UTC'));
+        $this->updatedAt = new DateTimeImmutable('now', new DateTimeZone('UTC'));
     }
 }

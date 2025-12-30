@@ -1,0 +1,31 @@
+AppBundle\Entity\Patient:
+    type: entity
+    table: null
+    repositoryClass: AppBundle\Repository\PatientRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        externalId:
+            type: string
+            length: '50'
+            nullable: true
+            column: external_id
+        dateOfBirth:
+            type: date
+            column: date_of_birth
+        sex:
+            type: string
+            length: '1'
+        createdAt:
+            type: datetime
+            column: created_at
+    lifecycleCallbacks:
+        prePersist: [ onPreCreatedAt ]
+    oneToMany:
+        charges:
+            targetEntity: AppBundle\Entity\Charge
+            mappedBy: patient

@@ -1,0 +1,23 @@
+AppBundle\Entity\Department:
+    type: entity
+    table: null
+    repositoryClass: AppBundle\Repository\DepartmentRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        code:
+            type: string
+            length: '20'
+        name:
+            type: string
+            length: '100'
+    lifecycleCallbacks: {  }
+    oneToMany:
+        charges:
+            targetEntity: AppBundle\Entity\Charge
+            mappedBy: department
+

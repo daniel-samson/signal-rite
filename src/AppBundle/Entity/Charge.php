@@ -5,6 +5,7 @@ namespace AppBundle\Entity;
 use AppBundle\Entity\Traits\CreatedAtTrait;
 use AppBundle\Enums\ChargePayerTypeEnum;
 use AppBundle\Enums\ChargeProcedureCodeEnum;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
@@ -38,7 +39,7 @@ class Charge
     private $payerType;
 
     /**
-     * @var \DateTime Date of service
+     * @var DateTime Date of service
      */
     private $serviceDate;
 
@@ -48,6 +49,15 @@ class Charge
     private $insights;
 
     /**
+     * @var Department
+     */
+    private $department;
+    /***
+     * @var Patient
+     */
+    private $patient;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -55,6 +65,37 @@ class Charge
         $this->insights = new ArrayCollection();
     }
 
+    /**
+     * @return Department
+     */
+    public function getDepartment(): Department
+    {
+        return $this->department;
+    }
+
+    /**
+     * @param Department $department
+     */
+    public function setDepartment(Department $department): void
+    {
+        $this->department = $department;
+    }
+
+    /**
+     * @return Patient
+     */
+    public function getPatient(): Patient
+    {
+        return $this->patient;
+    }
+
+    /**
+     * @param Patient $patient
+     */
+    public function setPatient(Patient $patient): void
+    {
+        $this->patient = $patient;
+    }
 
     /**
      * Get id.
@@ -64,6 +105,20 @@ class Charge
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Get procedureCode.
+     *  - Procedures
+     *  - Services
+     *  - Supplies
+     *  - Non-physician services
+     *
+     * @return string
+     */
+    public function getProcedureCode(): string
+    {
+        return $this->procedureCode;
     }
 
     /**
@@ -86,17 +141,13 @@ class Charge
     }
 
     /**
-     * Get procedureCode.
-     *  - Procedures
-     *  - Services
-     *  - Supplies
-     *  - Non-physician services
+     * Get chargeAmountCents.
      *
-     * @return string
+     * @return int
      */
-    public function getProcedureCode(): string
+    public function getChargeAmountCents(): int
     {
-        return $this->procedureCode;
+        return $this->chargeAmountCents;
     }
 
     /**
@@ -114,31 +165,6 @@ class Charge
     }
 
     /**
-     * Get chargeAmountCents.
-     *
-     * @return int
-     */
-    public function getChargeAmountCents(): int
-    {
-        return $this->chargeAmountCents;
-    }
-
-    /**
-     * Set payerType.
-     *
-     * @param string $payerType
-     * @see ChargePayerTypeEnum
-     *
-     * @return Charge
-     */
-    public function setPayerType(string $payerType): self
-    {
-        $this->payerType = ChargePayerTypeEnum::normalize($payerType);
-
-        return $this;
-    }
-
-    /**
      * Get payerType.
      *
      * @return string
@@ -149,15 +175,16 @@ class Charge
     }
 
     /**
-     * Set serviceDate.
+     * Set payerType.
      *
-     * @param \DateTime $serviceDate
-     *
+     * @param string $payerType
      * @return Charge
+     * @see ChargePayerTypeEnum
+     *
      */
-    public function setServiceDate(\DateTime $serviceDate): self
+    public function setPayerType(string $payerType): self
     {
-        $this->serviceDate = $serviceDate;
+        $this->payerType = ChargePayerTypeEnum::normalize($payerType);
 
         return $this;
     }
@@ -165,11 +192,25 @@ class Charge
     /**
      * Get serviceDate.
      *
-     * @return \DateTime
+     * @return DateTime
      */
-    public function getServiceDate(): \DateTime
+    public function getServiceDate(): DateTime
     {
         return $this->serviceDate;
+    }
+
+    /**
+     * Set serviceDate.
+     *
+     * @param DateTime $serviceDate
+     *
+     * @return Charge
+     */
+    public function setServiceDate(DateTime $serviceDate): self
+    {
+        $this->serviceDate = $serviceDate;
+
+        return $this;
     }
 
     /**

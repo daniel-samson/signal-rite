@@ -32,3 +32,16 @@ AppBundle\Entity\Charge:
         insights:
             targetEntity: AppBundle\Entity\Insight
             mappedBy: charge
+    manyToOne:
+        department:
+            targetEntity: AppBundle\Entity\Department
+            inversedBy: charges
+            joinColumn:
+                name: department_id
+                referencedColumnName: id
+        patient:
+            targetEntity: AppBundle\Entity\Patient
+            inversedBy: charges
+            joinColumn:
+                name: patient_id
+                referencedColumnName: id

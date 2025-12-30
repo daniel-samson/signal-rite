@@ -11,6 +11,7 @@ use AppBundle\Enums\InsightSeverityEnum;
 class Insight
 {
     use CreatedAtTrait;
+
     /**
      * @var int
      */
@@ -53,12 +54,22 @@ class Insight
     }
 
     /**
+     * Get severity.
+     *
+     * @return string
+     */
+    public function getSeverity(): string
+    {
+        return $this->severity;
+    }
+
+    /**
      * Set severity.
      *
      * @param string $severity
+     * @return Insight
      * @see InsightSeverityEnum
      *
-     * @return Insight
      */
     public function setSeverity(string $severity): self
     {
@@ -68,13 +79,13 @@ class Insight
     }
 
     /**
-     * Get severity.
+     * Get message.
      *
      * @return string
      */
-    public function getSeverity(): string
+    public function getMessage()
     {
-        return $this->severity;
+        return $this->message;
     }
 
     /**
@@ -92,13 +103,13 @@ class Insight
     }
 
     /**
-     * Get message.
+     * Get revenueAtRiskInCents.
      *
      * @return string
      */
-    public function getMessage()
+    public function getRevenueAtRiskInCents()
     {
-        return $this->message;
+        return $this->revenueAtRiskInCents;
     }
 
     /**
@@ -116,13 +127,13 @@ class Insight
     }
 
     /**
-     * Get revenueAtRiskInCents.
+     * Get charge.
      *
-     * @return string
+     * @return Charge|null
      */
-    public function getRevenueAtRiskInCents()
+    public function getCharge()
     {
-        return $this->revenueAtRiskInCents;
+        return $this->charge;
     }
 
     /**
@@ -140,13 +151,13 @@ class Insight
     }
 
     /**
-     * Get charge.
+     * Get rule.
      *
-     * @return Charge|null
+     * @return Rule|null
      */
-    public function getCharge()
+    public function getRule()
     {
-        return $this->charge;
+        return $this->rule;
     }
 
     /**
@@ -161,15 +172,5 @@ class Insight
         $this->rule = $rule;
 
         return $this;
-    }
-
-    /**
-     * Get rule.
-     *
-     * @return Rule|null
-     */
-    public function getRule()
-    {
-        return $this->rule;
     }
 }
