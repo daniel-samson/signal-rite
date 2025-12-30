@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\Entity\Traits\CreatedAtTrait;
 use AppBundle\Enums\ChargePayerTypeEnum;
 use AppBundle\Enums\ChargeProcedureCodeEnum;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -13,6 +14,8 @@ use Doctrine\Common\Collections\Collection;
  */
 class Charge
 {
+    use CreatedAtTrait;
+
     /**
      * @var int
      */
@@ -38,11 +41,6 @@ class Charge
      * @var \DateTime Date of service
      */
     private $serviceDate;
-
-    /**
-     * @var \DateTime Record creation time
-     */
-    private $createdAt;
 
     /**
      * @var Collection|Insight[]
@@ -172,30 +170,6 @@ class Charge
     public function getServiceDate(): \DateTime
     {
         return $this->serviceDate;
-    }
-
-    /**
-     * Set createdAt.
-     *
-     * @param \DateTime $createdAt
-     *
-     * @return Charge
-     */
-    public function setCreatedAt(\DateTime $createdAt): self
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    /**
-     * Get createdAt.
-     *
-     * @return \DateTime
-     */
-    public function getCreatedAt(): \DateTime
-    {
-        return $this->createdAt;
     }
 
     /**

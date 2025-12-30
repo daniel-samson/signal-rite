@@ -2,7 +2,7 @@
 
 namespace AppBundle\Entity\Traits;
 
-trait StampUpdatedAtTrait
+trait UpdatedAtTrait
 {
     /**
      * @var \DateTimeImmutable|null
@@ -19,7 +19,7 @@ trait StampUpdatedAtTrait
         $this->updatedAt = $updatedAt;
     }
 
-    public function onPreUpdate(): void
+    public function onPreUpdateAt(): void
     {
         $this->updatedAt = new \DateTimeImmutable('now', new \DateTimeZone('UTC'));
     }

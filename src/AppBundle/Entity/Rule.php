@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\Entity\Traits\CreatedAtTrait;
 use AppBundle\Enums\RuleTypeEnum;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -11,6 +12,8 @@ use Doctrine\Common\Collections\Collection;
  */
 class Rule
 {
+    use CreatedAtTrait;
+
     /**
      * @var int
      */
@@ -35,11 +38,6 @@ class Rule
      * @var bool
      */
     private $active;
-
-    /**
-     * @var \DateTime
-     */
-    private $createdAt;
 
     /**
      * @var Collection|Insight[]
@@ -159,30 +157,6 @@ class Rule
     public function getActive(): bool
     {
         return $this->active;
-    }
-
-    /**
-     * Set createdAt.
-     *
-     * @param \DateTime $createdAt
-     *
-     * @return Rule
-     */
-    public function setCreatedAt(\DateTime $createdAt): self
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    /**
-     * Get createdAt.
-     *
-     * @return \DateTime
-     */
-    public function getCreatedAt(): \DateTime
-    {
-        return $this->createdAt;
     }
 
     /**

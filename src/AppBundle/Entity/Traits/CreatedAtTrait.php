@@ -2,7 +2,10 @@
 
 namespace AppBundle\Entity\Traits;
 
-trait StampCreatedAtTrait
+/**
+ * Handles createdAt fields and onPrePersist
+ */
+trait CreatedAtTrait
 {
     /**
      * @var \DateTimeImmutable|null
@@ -19,7 +22,7 @@ trait StampCreatedAtTrait
         $this->createdAt = $createdAt;
     }
 
-    public function onPrePersist(): void
+    public function onPreCreatedAt(): void
     {
         if ($this->createdAt === null) {
             $this->createdAt = new \DateTimeImmutable('now', new \DateTimeZone('UTC'));

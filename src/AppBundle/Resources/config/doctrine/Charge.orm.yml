@@ -26,7 +26,8 @@ AppBundle\Entity\Charge:
         createdAt:
             type: datetime
             column: created_at
-    lifecycleCallbacks: {  }
+    lifecycleCallbacks:
+        prePersist: [ onPreCreatedAt ]
     oneToMany:
         insights:
             targetEntity: AppBundle\Entity\Insight

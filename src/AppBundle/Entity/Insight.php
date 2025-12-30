@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\Entity\Traits\CreatedAtTrait;
 use AppBundle\Enums\InsightSeverityEnum;
 
 /**
@@ -9,6 +10,7 @@ use AppBundle\Enums\InsightSeverityEnum;
  */
 class Insight
 {
+    use CreatedAtTrait;
     /**
      * @var int
      */
@@ -28,11 +30,6 @@ class Insight
      * @var string
      */
     private $revenueAtRiskInCents;
-
-    /**
-     * @var \DateTime
-     */
-    private $createdAt;
 
     /**
      * @var Charge
@@ -126,30 +123,6 @@ class Insight
     public function getRevenueAtRiskInCents()
     {
         return $this->revenueAtRiskInCents;
-    }
-
-    /**
-     * Set createdAt.
-     *
-     * @param \DateTime $createdAt
-     *
-     * @return Insight
-     */
-    public function setCreatedAt(\DateTime $createdAt): self
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    /**
-     * Get createdAt.
-     *
-     * @return \DateTime
-     */
-    public function getCreatedAt(): \DateTime
-    {
-        return $this->createdAt;
     }
 
     /**
