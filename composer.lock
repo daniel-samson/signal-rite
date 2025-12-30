@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "10cab91c047034088175b86c5a9a60c7",
+    "content-hash": "e81bc4a49931a76d8f958e17d97c868b",
     "packages": [
         {
             "name": "composer/package-versions-deprecated",
@@ -1880,6 +1880,49 @@
                 }
             ],
             "time": "2022-03-05T18:15:28+00:00"
+        },
+        {
+            "name": "php-compatible/enum",
+            "version": "v1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-compatible/enum.git",
+                "reference": "f96046c378bec0440ff27486e8ce4fd286bab785"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-compatible/enum/zipball/f96046c378bec0440ff27486e8ce4fd286bab785",
+                "reference": "f96046c378bec0440ff27486e8ce4fd286bab785",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.2",
+                "symfony/console": "^3.4 || ^4.0 || ^5.0 || ^6.0 || ^7.0 || ^8.0"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^2.19",
+                "phpunit/phpunit": "^8.5"
+            },
+            "bin": [
+                "bin/php-compatible-enum-auto-doc",
+                "bin/php-compatible-enum-upgrade-to-php8"
+            ],
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "PhpCompatible\\Enum\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "PHP 8 enums compatible for PHP 7",
+            "support": {
+                "issues": "https://github.com/php-compatible/enum/issues",
+                "source": "https://github.com/php-compatible/enum/tree/v1.1.0"
+            },
+            "time": "2025-12-30T16:17:24+00:00"
         },
         {
             "name": "psr/cache",

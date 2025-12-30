@@ -4,12 +4,21 @@ declare(strict_types=1);
 
 namespace AppBundle\Enums;
 
+use PhpCompatible\Enum\Enum;
+use PhpCompatible\Enum\Value;
+
 /**
  * Possible values for the Charge.payer_type
+ *
+ * @method static Value medicare()
+ * @method static Value medicaid()
+ * @method static Value commercial()
  */
-class ChargePayerTypeEnum extends ConstantEnum
+class ChargePayerTypeEnum extends Enum
 {
-    public const MEDICARE = 'MEDICARE';
-    public const MEDICAID = 'MEDICAID';
-    public const COMMERCIAL = 'COMMERCIAL';
+    use NormalizesValuesTrait;
+
+    protected $medicare = 'MEDICARE';
+    protected $medicaid = 'MEDICAID';
+    protected $commercial = 'COMMERCIAL';
 }

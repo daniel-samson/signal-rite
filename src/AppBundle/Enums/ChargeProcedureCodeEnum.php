@@ -4,92 +4,131 @@ declare(strict_types=1);
 
 namespace AppBundle\Enums;
 
-use ReflectionClass;
+use PhpCompatible\Enum\Enum;
+use PhpCompatible\Enum\Value;
 
-final class ChargeProcedureCodeEnum extends ConstantEnum
+/**
+ * CPT and HCPCS procedure codes.
+ *
+ * @method static Value cptOfficeVisitLevel1()
+ * @method static Value cptOfficeVisitLevel2()
+ * @method static Value cptOfficeVisitLevel3()
+ * @method static Value cptOfficeVisitLevel4()
+ * @method static Value cptOfficeVisitLevel5()
+ * @method static Value cptEstablishedVisitLevel1()
+ * @method static Value cptEstablishedVisitLevel2()
+ * @method static Value cptEstablishedVisitLevel3()
+ * @method static Value cptEstablishedVisitLevel4()
+ * @method static Value cptEstablishedVisitLevel5()
+ * @method static Value cptChestXray()
+ * @method static Value cptMriLumbarSpine()
+ * @method static Value cptShoulderXray()
+ * @method static Value cptCtAbdomenPelvis()
+ * @method static Value cptEcgComplete()
+ * @method static Value cptEcgInterpretation()
+ * @method static Value cptEchocardiogram()
+ * @method static Value cptFineNeedleAspiration()
+ * @method static Value cptBreastBiopsy()
+ * @method static Value cptLaparoscopicCholecystectomy()
+ * @method static Value cptBasicMetabolicPanel()
+ * @method static Value cptComprehensiveMetabolicPanel()
+ * @method static Value cptCompleteBloodCount()
+ * @method static Value hcpcsAmbulanceService()
+ * @method static Value hcpcsCrutches()
+ * @method static Value hcpcsWristOrthosis()
+ * @method static Value hcpcsDexamethasoneInjection()
+ * @method static Value hcpcsOndansetronInjection()
+ * @method static Value hcpcsUnclassifiedDrug()
+ * @method static Value modifierSignificantSeparateEM()
+ * @method static Value modifierProfessionalComponent()
+ * @method static Value modifierDistinctProceduralService()
+ * @method static Value modifierTelehealth()
+ */
+final class ChargeProcedureCodeEnum extends Enum
 {
+    use NormalizesValuesTrait;
+
     /*
      * =========================
      * CPT – Evaluation & Management
      * =========================
      */
-    public const CPT_OFFICE_VISIT_LEVEL_1 = '99201';
-    public const CPT_OFFICE_VISIT_LEVEL_2 = '99202';
-    public const CPT_OFFICE_VISIT_LEVEL_3 = '99203';
-    public const CPT_OFFICE_VISIT_LEVEL_4 = '99204';
-    public const CPT_OFFICE_VISIT_LEVEL_5 = '99205';
+    protected $cptOfficeVisitLevel1 = '99201';
+    protected $cptOfficeVisitLevel2 = '99202';
+    protected $cptOfficeVisitLevel3 = '99203';
+    protected $cptOfficeVisitLevel4 = '99204';
+    protected $cptOfficeVisitLevel5 = '99205';
 
-    public const CPT_ESTABLISHED_VISIT_LEVEL_1 = '99211';
-    public const CPT_ESTABLISHED_VISIT_LEVEL_2 = '99212';
-    public const CPT_ESTABLISHED_VISIT_LEVEL_3 = '99213';
-    public const CPT_ESTABLISHED_VISIT_LEVEL_4 = '99214';
-    public const CPT_ESTABLISHED_VISIT_LEVEL_5 = '99215';
+    protected $cptEstablishedVisitLevel1 = '99211';
+    protected $cptEstablishedVisitLevel2 = '99212';
+    protected $cptEstablishedVisitLevel3 = '99213';
+    protected $cptEstablishedVisitLevel4 = '99214';
+    protected $cptEstablishedVisitLevel5 = '99215';
 
     /*
      * =========================
      * CPT – Radiology
      * =========================
      */
-    public const CPT_CHEST_XRAY = '71020';
-    public const CPT_MRI_LUMBAR_SPINE = '72148';
-    public const CPT_SHOULDER_XRAY = '73030';
-    public const CPT_CT_ABDOMEN_PELVIS = '74177';
+    protected $cptChestXray = '71020';
+    protected $cptMriLumbarSpine = '72148';
+    protected $cptShoulderXray = '73030';
+    protected $cptCtAbdomenPelvis = '74177';
 
     /*
      * =========================
      * CPT – Cardiology
      * =========================
      */
-    public const CPT_ECG_COMPLETE = '93000';
-    public const CPT_ECG_INTERPRETATION = '93010';
-    public const CPT_ECHOCARDIOGRAM = '93306';
+    protected $cptEcgComplete = '93000';
+    protected $cptEcgInterpretation = '93010';
+    protected $cptEchocardiogram = '93306';
 
     /*
      * =========================
      * CPT – Surgery
      * =========================
      */
-    public const CPT_FINE_NEEDLE_ASPIRATION = '10021';
-    public const CPT_BREAST_BIOPSY = '19120';
-    public const CPT_LAPAROSCOPIC_CHOLECYSTECTOMY = '47562';
+    protected $cptFineNeedleAspiration = '10021';
+    protected $cptBreastBiopsy = '19120';
+    protected $cptLaparoscopicCholecystectomy = '47562';
 
     /*
      * =========================
      * CPT – Pathology / Lab
      * =========================
      */
-    public const CPT_BASIC_METABOLIC_PANEL = '80048';
-    public const CPT_COMPREHENSIVE_METABOLIC_PANEL = '80053';
-    public const CPT_COMPLETE_BLOOD_COUNT = '85025';
+    protected $cptBasicMetabolicPanel = '80048';
+    protected $cptComprehensiveMetabolicPanel = '80053';
+    protected $cptCompleteBloodCount = '85025';
 
     /*
      * =========================
      * HCPCS Level II – Supplies / DME
      * =========================
      */
-    public const HCPCS_AMBULANCE_SERVICE = 'A0428';
-    public const HCPCS_CRUTCHES = 'E0114';
-    public const HCPCS_WRIST_ORTHOSIS = 'L3908';
+    protected $hcpcsAmbulanceService = 'A0428';
+    protected $hcpcsCrutches = 'E0114';
+    protected $hcpcsWristOrthosis = 'L3908';
 
     /*
      * =========================
      * HCPCS Level II – Drugs
      * =========================
      */
-    public const HCPCS_DEXAMETHASONE_INJECTION = 'J1100';
-    public const HCPCS_ONDANSETRON_INJECTION = 'J2405';
-    public const HCPCS_UNCLASSIFIED_DRUG = 'J3490';
+    protected $hcpcsDexamethasoneInjection = 'J1100';
+    protected $hcpcsOndansetronInjection = 'J2405';
+    protected $hcpcsUnclassifiedDrug = 'J3490';
 
     /*
      * =========================
      * Common Modifiers
      * =========================
      */
-    public const MODIFIER_SIGNIFICANT_SEPARATE_E_M = '25';
-    public const MODIFIER_PROFESSIONAL_COMPONENT = '26';
-    public const MODIFIER_DISTINCT_PROCEDURAL_SERVICE = '59';
-    public const MODIFIER_TELEHEALTH = 'GT';
-
+    protected $modifierSignificantSeparateEM = '25';
+    protected $modifierProfessionalComponent = '26';
+    protected $modifierDistinctProceduralService = '59';
+    protected $modifierTelehealth = 'GT';
 
     /**
      * Check whether a string is a valid CPT or HCPCS-style procedure code.

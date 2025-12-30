@@ -4,12 +4,23 @@ declare(strict_types=1);
 
 namespace AppBundle\Enums;
 
-class RuleTypeEnum extends ConstantEnum
+use PhpCompatible\Enum\Enum;
+use PhpCompatible\Enum\Value;
+
+/**
+ * Rule types for compliance and validation rules.
+ *
+ * @method static Value eligibility()
+ * @method static Value pricing()
+ * @method static Value validation()
+ * @method static Value authorization()
+ */
+class RuleTypeEnum extends Enum
 {
-    public const ELIGIBILITY = "ELIGIBILITY";
-    public const PRICING = "PRICING";
-    public const VALIDATION = "VALIDATION";
-    public const AUTHORIZATION = "AUTHORIZATION";
+    use NormalizesValuesTrait;
 
-
+    protected $eligibility = 'ELIGIBILITY';
+    protected $pricing = 'PRICING';
+    protected $validation = 'VALIDATION';
+    protected $authorization = 'AUTHORIZATION';
 }
