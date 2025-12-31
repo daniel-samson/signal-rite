@@ -1,5 +1,7 @@
 services:
   php-cli:
+    profiles:
+      - tools
     build:
       context: .
       dockerfile: docker/php/Dockerfile
@@ -78,5 +80,25 @@ services:
     ports:
       - "1025:1025"
       - "8025:8025"
+  claude-code:
+    profiles:
+      - tools
+    build:
+      context: ./docker/claude-code
+      dockerfile: Dockerfile
+    container_name: claude-code
+    volumes:
+      - .:/app
+      - claude-config:/home/node/.claude
+    working_dir: /app
+    env_file:
+      - .env
+    environment:
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+    stdin_open: true
+    tty: true
+    command: ["claude", "--dangerously-skip-permissions"]
+
 volumes:
   oracle-data:
+  claude-config:
