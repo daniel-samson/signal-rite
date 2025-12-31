@@ -1,0 +1,5 @@
+# Ignore large scraped data files
+*.json
+
+# But keep this .gitignore
+!.gitignore

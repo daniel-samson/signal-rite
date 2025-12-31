@@ -18,3 +18,8 @@ parameters:
 
     # A secret key that's used to generate certain security-related tokens
     secret: ThisTokenIsNotSoSecretChangeIt
+
+    # WHO ICD API credentials
+    # Register at https://icd.who.int/icdapi to get your credentials
+    who_icd_client_id: ~
+    who_icd_client_secret: ~

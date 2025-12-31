@@ -30,6 +30,13 @@ framework:
     assets: ~
     php_errors:
         log: true
+    cache:
+        # Use filesystem cache adapter
+        app: cache.adapter.filesystem
+        pools:
+            cache.icd10:
+                adapter: cache.adapter.filesystem
+                default_lifetime: 86400
 
 # Twig Configuration
 twig:
