@@ -1,0 +1,102 @@
+# Audit Rules
+# Pattern detection and audit flag rules
+
+rules:
+  - id: AUD_001
+    name: High-Volume Same-Day Charges
+    type: audit
+    description: Flags unusual volume of identical charges on same day
+    severity: medium
+    condition: >
+      same_day_count > 5 &&
+      procedure_code.test(/^99[0-9]{3}$/)
+    message: "Unusual volume of identical E&M charges on same day"
+    tags: [duplicate, pattern, volume]
+    enabled: true
+
+  - id: AUD_002
+    name: Weekend High-Dollar Procedure
+    type: audit
+    description: High-dollar procedures on weekends require review
+    severity: low
+    condition: >
+      is_weekend === true &&
+      charge_amount > 500000 &&
+      department_code not in ["ER", "ICU", "LABOR", "OR"]
+    message: "High-dollar weekend charge outside emergency departments"
+    tags: [weekend, scheduling, audit]
+    enabled: true
+
+  - id: AUD_003
+    name: Cardiac Procedure Without Cardiac Diagnosis
+    type: audit
+    description: Cardiac procedures should have supporting cardiovascular diagnosis
+    severity: high
+    condition: >
+      procedure_code.startsWith("33") &&
+      diagnosis_codes.join(",").indexOf("I") < 0
+    message: "Cardiac procedure code without cardiovascular diagnosis (I-codes)"
+    tags: [diagnosis-mismatch, cardiology]
+    enabled: true
+
+  - id: AUD_004
+    name: Late Night Non-Emergency Charge
+    type: audit
+    description: Non-emergency charges posted during late night hours
+    severity: low
+    condition: >
+      is_late_night === true &&
+      department_code not in ["ER", "ICU", "LABOR"] &&
+      patient_type != "INPATIENT"
+    message: "Non-emergency charge posted during late night hours"
+    tags: [timing, audit, pattern]
+    enabled: true
+
+  - id: AUD_005
+    name: Outpatient Surgery High Charge
+    type: audit
+    description: Outpatient surgical charges exceeding typical thresholds
+    severity: medium
+    condition: >
+      patient_type == "OUTPATIENT" &&
+      procedure_code.test(/^[1-6][0-9]{4}$/) &&
+      charge_amount > 750000
+    message: "Outpatient surgery charge exceeds typical threshold"
+    tags: [outpatient, surgery, review]
+    enabled: true
+
+  - id: AUD_006
+    name: Self-Pay High Dollar
+    type: audit
+    description: High-dollar self-pay charges require financial counseling review
+    severity: medium
+    condition: >
+      payer_type == "SELF_PAY" &&
+      charge_amount > 200000
+    message: "High-dollar self-pay charge - verify financial counseling completed"
+    tags: [self-pay, financial, counseling]
+    enabled: true
+
+  - id: AUD_007
+    name: Duplicate Charge Pattern
+    type: audit
+    description: Same procedure code charged multiple times in short period
+    severity: high
+    condition: >
+      duplicate_count > 1 &&
+      charge_amount > 50000
+    message: "Potential duplicate charge detected"
+    tags: [duplicate, billing-error]
+    enabled: true
+
+  - id: AUD_008
+    name: Diagnosis Code Upcoding Pattern
+    type: audit
+    description: Pattern of high-severity diagnosis codes requires review
+    severity: medium
+    condition: >
+      diagnosis_codes.join(",").test(/\.(9|8)[0-9]?$/) &&
+      payer_type in ["MEDICARE", "MEDICAID"]
+    message: "High-severity diagnosis code pattern detected"
+    tags: [upcoding, diagnosis, pattern]
+    enabled: true

@@ -66,21 +66,25 @@ Ensures predictable input:
 
 ### 3. Rules Engine
 
-Rules are defined in YAML.
+Rules are defined in YAML using [nicoSWD/php-rule-parser](https://github.com/nicoSWD/php-rule-parser) syntax.
 
 Example:
 
 ```yaml
-id: REV_001
-type: revenue
-description: Charge amount below expected threshold
-conditions:
-  procedure_code: MRI_BRAIN
-  payer_type: MEDICARE
-threshold:
-  min_amount: 50000
-severity: medium
+- id: REV_001
+  name: MRI Undercharge Detection
+  type: revenue
+  description: Charge amount below expected threshold
+  severity: medium
+  condition: >
+    procedure_code.startsWith("70") &&
+    payer_type == "MEDICARE" &&
+    charge_amount < 50000
+  message: "MRI charge below Medicare minimum threshold"
+  tags: [imaging, medicare, undercharge]
 ```
+
+See [Rules Engine Documentation](rules-engine.md) for full schema, operators, and examples.
 
 ---
 
@@ -127,4 +131,4 @@ Returns insights for a charge.
 - Explain findings
 - Estimate impact
 
-**Next:** [database ERD](database-erd.md)
+**Next:** [Database ERD](database-erd.md) | [Rules Engine](rules-engine.md)

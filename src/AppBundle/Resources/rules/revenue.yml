@@ -1,0 +1,78 @@
+# Revenue Rules
+# Detect revenue leakage, undercharging, and overcharging patterns
+
+rules:
+  - id: REV_001
+    name: MRI Undercharge Detection
+    type: revenue
+    description: Flags MRI procedures charged below Medicare minimum threshold
+    severity: medium
+    condition: >
+      procedure_code.startsWith("70") &&
+      payer_type == "MEDICARE" &&
+      charge_amount < 50000
+    message: "MRI charge is below Medicare minimum threshold of $500.00"
+    tags: [imaging, medicare, undercharge]
+    enabled: true
+
+  - id: REV_002
+    name: CT Scan Undercharge Detection
+    type: revenue
+    description: Flags CT procedures charged below expected threshold
+    severity: medium
+    condition: >
+      procedure_code.startsWith("71") &&
+      payer_type in ["MEDICARE", "MEDICAID"] &&
+      charge_amount < 30000
+    message: "CT scan charge is below expected threshold of $300.00"
+    tags: [imaging, undercharge]
+    enabled: true
+
+  - id: REV_003
+    name: Excessive Charge Amount
+    type: revenue
+    description: Flags charges exceeding maximum allowed amount
+    severity: high
+    condition: >
+      charge_amount > 1000000
+    message: "Charge amount exceeds $10,000 maximum threshold"
+    tags: [overcharge, audit]
+    enabled: true
+
+  - id: REV_004
+    name: Zero Dollar Charge
+    type: revenue
+    description: Identifies charges with zero amount that may indicate missed billing
+    severity: low
+    condition: >
+      charge_amount === 0 &&
+      payer_type not in ["CHARITY", "WRITE_OFF"]
+    message: "Zero dollar charge detected for billable payer type"
+    tags: [revenue-leakage, zero-charge]
+    enabled: true
+
+  - id: REV_005
+    name: E&M Code Undercharge
+    type: revenue
+    description: E&M codes charged below typical Medicare rates
+    severity: medium
+    condition: >
+      procedure_code.test(/^992[0-9]{2}$/) &&
+      payer_type == "MEDICARE" &&
+      charge_amount < 7500
+    message: "E&M code charge below typical Medicare reimbursement"
+    tags: [e-and-m, undercharge, medicare]
+    enabled: true
+
+  - id: REV_006
+    name: Surgery Undercharge Detection
+    type: revenue
+    description: Surgical procedures charged below minimum threshold
+    severity: high
+    condition: >
+      procedure_code.test(/^[1-6][0-9]{4}$/) &&
+      charge_amount < 100000 &&
+      payer_type in ["MEDICARE", "MEDICAID", "COMMERCIAL"]
+    message: "Surgical procedure charge below minimum expected amount"
+    tags: [surgery, undercharge]
+    enabled: true

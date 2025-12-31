@@ -1,0 +1,85 @@
+# Compliance Rules
+# Regulatory compliance and documentation requirements
+
+rules:
+  - id: COMP_001
+    name: Missing Diagnosis Code
+    type: compliance
+    description: All charges must have at least one diagnosis code
+    severity: high
+    condition: >
+      diagnosis_codes.join("") === ""
+    message: "Charge is missing required diagnosis code"
+    tags: [compliance, diagnosis, required]
+    enabled: true
+
+  - id: COMP_002
+    name: High-Level E&M Code Review
+    type: compliance
+    description: High-level E&M codes require documented justification
+    severity: medium
+    condition: >
+      procedure_code in ["99215", "99205", "99223", "99233", "99236"] &&
+      payer_type in ["MEDICARE", "MEDICAID"]
+    message: "High-level E&M code requires documentation review"
+    tags: [e-and-m, documentation, audit-risk]
+    enabled: true
+
+  - id: COMP_003
+    name: Global OB Code Modifier Required
+    type: compliance
+    description: Global OB codes may require modifiers for Medicare
+    severity: high
+    condition: >
+      procedure_code in ["59400", "59510", "59610", "59618"] &&
+      payer_type == "MEDICARE"
+    message: "Global OB code may require modifier for Medicare billing"
+    tags: [modifier, obstetrics, medicare]
+    enabled: true
+
+  - id: COMP_004
+    name: Emergency Room High Acuity
+    type: compliance
+    description: High-acuity ER codes require supporting documentation
+    severity: medium
+    condition: >
+      procedure_code in ["99285", "99284"] &&
+      department_code == "ER"
+    message: "High-acuity ER code requires acuity documentation"
+    tags: [emergency, documentation, acuity]
+    enabled: true
+
+  - id: COMP_005
+    name: Critical Care Time Documentation
+    type: compliance
+    description: Critical care codes require time documentation
+    severity: high
+    condition: >
+      procedure_code in ["99291", "99292"]
+    message: "Critical care code requires documented time spent"
+    tags: [critical-care, documentation, time]
+    enabled: true
+
+  - id: COMP_006
+    name: Modifier 25 Review
+    type: compliance
+    description: E&M with modifier 25 on same day as procedure requires review
+    severity: medium
+    condition: >
+      procedure_code.test(/^992[0-9]{2}$/) &&
+      has_modifier_25 === true
+    message: "E&M with modifier 25 requires separate identifiable service documentation"
+    tags: [modifier, e-and-m, same-day]
+    enabled: true
+
+  - id: COMP_007
+    name: Medicare ABN Required
+    type: compliance
+    description: Non-covered services for Medicare require ABN
+    severity: high
+    condition: >
+      payer_type == "MEDICARE" &&
+      is_covered === false
+    message: "Non-covered Medicare service requires Advance Beneficiary Notice"
+    tags: [medicare, abn, compliance]
+    enabled: true

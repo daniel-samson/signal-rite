@@ -35,3 +35,8 @@ services:
             $clientId: '%who_icd_client_id%'
             $clientSecret: '%who_icd_client_secret%'
             $cache: '@cache.icd10'
+
+    AppBundle\Command\MigrateRulesCommand:
+        arguments:
+            $kernelProjectDir: '%kernel.project_dir%'
+        tags: ['console.command']
