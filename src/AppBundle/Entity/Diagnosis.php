@@ -6,7 +6,13 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
 /**
- * Diagnosis (ICD-10 codes)
+ * Diagnosis entity representing an ICD-10 diagnosis code.
+ *
+ * Diagnosis codes establish medical necessity for procedures. A charge can have
+ * multiple diagnoses, and each diagnosis can appear on multiple charges (many-to-many).
+ * The Rules Engine validates diagnosis-procedure relationships.
+ *
+ * @see Charge for billable healthcare events
  */
 class Diagnosis
 {
@@ -16,16 +22,22 @@ class Diagnosis
     private $id;
 
     /**
-     * @var string ICD-10 code
+     * ICD-10 diagnosis code (e.g., E11.9, I10, J06.9).
+     *
+     * @var string
      */
     private $code;
 
     /**
+     * Human-readable diagnosis description.
+     *
      * @var string
      */
     private $description;
 
     /**
+     * Collection of charges associated with this diagnosis.
+     *
      * @var Collection|Charge[]
      */
     private $charges;

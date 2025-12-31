@@ -6,7 +6,15 @@ use AppBundle\Entity\Traits\CreatedAtTrait;
 use AppBundle\Enums\InsightSeverityEnum;
 
 /**
- * Insight
+ * Insight entity representing a rule-generated finding.
+ *
+ * Insights are the output of the Rules Engine. When a charge matches a rule's
+ * conditions, an insight is created with severity, message, and optional revenue
+ * impact. Insights provide explainable, actionable findings for revenue integrity.
+ *
+ * @see Rule for the triggering compliance rule
+ * @see Charge for the evaluated healthcare charge
+ * @see InsightSeverityEnum for severity levels (LOW, MEDIUM, HIGH, CRITICAL)
  */
 class Insight
 {
@@ -18,26 +26,39 @@ class Insight
     private $id;
 
     /**
+     * Severity level indicating urgency and impact.
+     *
      * @var string
+     * @see InsightSeverityEnum (LOW, MEDIUM, HIGH, CRITICAL)
      */
     private $severity;
 
     /**
+     * Human-readable message explaining the finding.
+     *
      * @var string
      */
     private $message;
 
     /**
+     * Estimated revenue impact in cents.
+     *
+     * Used for prioritization and financial reporting.
+     *
      * @var string
      */
     private $revenueAtRiskInCents;
 
     /**
+     * The charge that triggered this insight.
+     *
      * @var Charge
      */
     private $charge;
 
     /**
+     * The rule that generated this insight.
+     *
      * @var Rule
      */
     private $rule;

@@ -7,7 +7,12 @@ use DateTime;
 use Doctrine\Common\Collections\Collection;
 
 /**
- * Patient
+ * Patient entity representing a healthcare patient.
+ *
+ * A patient can have multiple charges associated with them. The patient record
+ * stores demographic information used for eligibility checks and rule validation.
+ *
+ * @see Charge for billable healthcare events
  */
 class Patient
 {
@@ -19,21 +24,30 @@ class Patient
     private $id;
 
     /**
+     * External system identifier (e.g., MRN, EHR ID).
+     *
      * @var string|null
      */
     private $externalId;
 
     /**
+     * Patient date of birth, used for age-based rule validation.
+     *
      * @var DateTime
      */
     private $dateOfBirth;
 
     /**
+     * Patient sex (M, F, or O) for gender-specific procedure validation.
+     *
      * @var string
+     * @see SexCharacterStringEnum
      */
     private $sex;
 
     /**
+     * Collection of charges billed for this patient.
+     *
      * @var Collection|Charge[]
      */
     private $charges;

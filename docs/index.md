@@ -21,14 +21,18 @@ This project is designed to be built with:
 ## High-Level Architecture
 
 ```
-Charge Data Input
+Charge Data Input (API / Manuel web interface)
         |
+        V
 Normalization Layer
         |
+        V
 Rules Engine
         |
+        V
 Risk Analyzer
         |
+        V
 Insight Output (JSON / API)
 ```
 
@@ -122,3 +126,5 @@ Returns insights for a charge.
 - Detect risk
 - Explain findings
 - Estimate impact
+
+**Next:** [database ERD](database-erd.md)
