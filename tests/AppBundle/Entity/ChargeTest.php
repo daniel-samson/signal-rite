@@ -4,6 +4,7 @@ namespace Tests\AppBundle\Entity;
 
 use AppBundle\Entity\Charge;
 use AppBundle\Entity\Department;
+use AppBundle\Entity\Diagnosis;
 use AppBundle\Entity\Insight;
 use AppBundle\Entity\Patient;
 use DateTime;
@@ -148,5 +149,52 @@ class ChargeTest extends TestCase
         $this->assertSame($charge, $charge->setChargeAmountCents(100));
         $this->assertSame($charge, $charge->setPayerType('insurance'));
         $this->assertSame($charge, $charge->setServiceDate(new DateTime()));
+    }
+
+    public function testDiagnosesCollectionIsInitialized()
+    {
+        $charge = new Charge();
+
+        $this->assertCount(0, $charge->getDiagnoses());
+    }
+
+    public function testCanAddDiagnosis()
+    {
+        $charge = new Charge();
+        $diagnosis = new Diagnosis();
+        $diagnosis->setCode('E11.9');
+        $diagnosis->setDescription('Type 2 diabetes');
+
+        $charge->addDiagnosis($diagnosis);
+
+        $this->assertCount(1, $charge->getDiagnoses());
+        $this->assertTrue($charge->getDiagnoses()->contains($diagnosis));
+        $this->assertTrue($diagnosis->getCharges()->contains($charge));
+    }
+
+    public function testAddDiagnosisIsIdempotent()
+    {
+        $charge = new Charge();
+        $diagnosis = new Diagnosis();
+        $diagnosis->setCode('E11.9');
+
+        $charge->addDiagnosis($diagnosis);
+        $charge->addDiagnosis($diagnosis);
+
+        $this->assertCount(1, $charge->getDiagnoses());
+    }
+
+    public function testCanRemoveDiagnosis()
+    {
+        $charge = new Charge();
+        $diagnosis = new Diagnosis();
+        $diagnosis->setCode('E11.9');
+
+        $charge->addDiagnosis($diagnosis);
+        $this->assertCount(1, $charge->getDiagnoses());
+
+        $charge->removeDiagnosis($diagnosis);
+        $this->assertCount(0, $charge->getDiagnoses());
+        $this->assertFalse($diagnosis->getCharges()->contains($charge));
     }
 }

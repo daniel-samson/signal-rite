@@ -45,3 +45,15 @@ AppBundle\Entity\Charge:
             joinColumn:
                 name: patient_id
                 referencedColumnName: id
+    manyToMany:
+        diagnoses:
+            targetEntity: AppBundle\Entity\Diagnosis
+            inversedBy: charges
+            joinTable:
+                name: charge_diagnosis
+                joinColumns:
+                    charge_id:
+                        referencedColumnName: id
+                inverseJoinColumns:
+                    diagnosis_id:
+                        referencedColumnName: id

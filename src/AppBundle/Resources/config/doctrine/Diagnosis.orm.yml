@@ -1,0 +1,23 @@
+AppBundle\Entity\Diagnosis:
+    type: entity
+    table: diagnoses
+    repositoryClass: AppBundle\Repository\DiagnosisRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        code:
+            type: string
+            length: 20
+            column: code
+        description:
+            type: string
+            length: 255
+            column: description
+    manyToMany:
+        charges:
+            targetEntity: AppBundle\Entity\Charge
+            mappedBy: diagnoses

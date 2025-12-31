@@ -49,6 +49,11 @@ class Charge
     private $insights;
 
     /**
+     * @var Collection|Diagnosis[]
+     */
+    private $diagnoses;
+
+    /**
      * @var Department
      */
     private $department;
@@ -63,6 +68,7 @@ class Charge
     public function __construct()
     {
         $this->insights = new ArrayCollection();
+        $this->diagnoses = new ArrayCollection();
     }
 
     /**
@@ -256,5 +262,48 @@ class Charge
     public function getInsights(): Collection
     {
         return $this->insights;
+    }
+
+    /**
+     * Get diagnoses.
+     *
+     * @return Collection|Diagnosis[]
+     */
+    public function getDiagnoses(): Collection
+    {
+        return $this->diagnoses;
+    }
+
+    /**
+     * Add diagnosis.
+     *
+     * @param Diagnosis $diagnosis
+     *
+     * @return Charge
+     */
+    public function addDiagnosis(Diagnosis $diagnosis): self
+    {
+        if (!$this->diagnoses->contains($diagnosis)) {
+            $this->diagnoses[] = $diagnosis;
+            $diagnosis->addCharge($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Remove diagnosis.
+     *
+     * @param Diagnosis $diagnosis
+     *
+     * @return Charge
+     */
+    public function removeDiagnosis(Diagnosis $diagnosis): self
+    {
+        if ($this->diagnoses->removeElement($diagnosis)) {
+            $diagnosis->removeCharge($this);
+        }
+
+        return $this;
     }
 }
