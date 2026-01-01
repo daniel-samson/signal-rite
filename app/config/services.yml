@@ -40,3 +40,32 @@ services:
         arguments:
             $kernelProjectDir: '%kernel.project_dir%'
         tags: ['console.command']
+
+    # Repositories - must be manually configured as they extend EntityRepository
+    AppBundle\Repository\ChargeRepository:
+        factory: ['@doctrine.orm.entity_manager', 'getRepository']
+        arguments: ['AppBundle\Entity\Charge']
+
+    AppBundle\Repository\DiagnosisRepository:
+        factory: ['@doctrine.orm.entity_manager', 'getRepository']
+        arguments: ['AppBundle\Entity\Diagnosis']
+
+    AppBundle\Repository\ProcedureCodeRepository:
+        factory: ['@doctrine.orm.entity_manager', 'getRepository']
+        arguments: ['AppBundle\Entity\ProcedureCode']
+
+    AppBundle\Repository\PatientRepository:
+        factory: ['@doctrine.orm.entity_manager', 'getRepository']
+        arguments: ['AppBundle\Entity\Patient']
+
+    AppBundle\Repository\DepartmentRepository:
+        factory: ['@doctrine.orm.entity_manager', 'getRepository']
+        arguments: ['AppBundle\Entity\Department']
+
+    AppBundle\Repository\InsightRepository:
+        factory: ['@doctrine.orm.entity_manager', 'getRepository']
+        arguments: ['AppBundle\Entity\Insight']
+
+    AppBundle\Repository\RuleRepository:
+        factory: ['@doctrine.orm.entity_manager', 'getRepository']
+        arguments: ['AppBundle\Entity\Rule']

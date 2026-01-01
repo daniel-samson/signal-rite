@@ -13,13 +13,11 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         # API firewall (stateless, Authorization header)
+        # TODO: Implement ApiTokenAuthenticator for production
         api:
             pattern: ^/api
             stateless: true
-            anonymous: false
-            guard:
-                authenticators:
-                    - app.security.api_token_authenticator
+            anonymous: true
         main:
             anonymous: ~
             # activate different ways to authenticate

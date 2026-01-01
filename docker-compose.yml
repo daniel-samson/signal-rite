@@ -11,6 +11,7 @@ services:
     env_file:
       - .env
     environment:
+      XDEBUG_CONFIG: "remote_enable=1 remote_autostart=1"
       PHP_IDE_CONFIG: "serverName=symfony"
       DATABASE_HOST: oracle
       DATABASE_PORT: 1521
@@ -29,9 +30,11 @@ services:
       context: .
       dockerfile: docker/php/Dockerfile
     volumes:
-      - .:/app
+      - .:/app:cached
+      - php-vendor:/app/vendor
+      - php-cache:/app/var/cache
     working_dir: /app
-    command: php -S 0.0.0.0:8000 -t web web/app_dev.php
+    command: php -S 0.0.0.0:8000 -t web web/router.php
     ports:
       - "8000:8000"
     env_file:
@@ -102,3 +105,5 @@ services:
 volumes:
   oracle-data:
   claude-config:
+  php-vendor:
+  php-cache:
