@@ -20,6 +20,11 @@ AppBundle\Entity\Patient:
         sex:
             type: string
             length: '1'
+        type:
+            type: string
+            length: '20'
+            nullable: true
+            column: patient_type
         createdAt:
             type: datetime
             column: created_at

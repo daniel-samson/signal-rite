@@ -46,6 +46,13 @@ class Patient
     private $sex;
 
     /**
+     * Patient type (INPATIENT, OUTPATIENT, OBSERVATION, EMERGENCY).
+     *
+     * @var string|null
+     */
+    private $type;
+
+    /**
      * Collection of charges billed for this patient.
      *
      * @var Collection|Charge[]
@@ -146,6 +153,30 @@ class Patient
     public function setSex($sex)
     {
         $this->sex = $sex;
+
+        return $this;
+    }
+
+    /**
+     * Get type.
+     *
+     * @return string|null
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * Set type.
+     *
+     * @param string|null $type
+     *
+     * @return Patient
+     */
+    public function setType($type)
+    {
+        $this->type = $type !== null ? strtoupper(trim($type)) : null;
 
         return $this;
     }
