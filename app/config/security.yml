@@ -12,7 +12,14 @@ security:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
-
+        # API firewall (stateless, Authorization header)
+        api:
+            pattern: ^/api
+            stateless: true
+            anonymous: false
+            guard:
+                authenticators:
+                    - app.security.api_token_authenticator
         main:
             anonymous: ~
             # activate different ways to authenticate
@@ -22,3 +29,11 @@ security:
 
             # https://symfony.com/doc/current/security/form_login_setup.html
             #form_login: ~
+#            TODO:
+#            pattern: ^/
+#            anonymous: true
+#            form_login:
+#                login_path: /login
+#                check_path: /login
+#            logout:
+#                path: /logout
