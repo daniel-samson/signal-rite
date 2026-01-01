@@ -1,0 +1,29 @@
+AppBundle\Entity\ProcedureCode:
+    type: entity
+    table: procedure_codes
+    repositoryClass: AppBundle\Repository\ProcedureCodeRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        code:
+            type: string
+            length: 20
+            column: code
+            unique: true
+        description:
+            type: string
+            length: 255
+            column: description
+        category:
+            type: string
+            length: 50
+            column: category
+            nullable: true
+    manyToMany:
+        charges:
+            targetEntity: AppBundle\Entity\Charge
+            mappedBy: procedureCodes
