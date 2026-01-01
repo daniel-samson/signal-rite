@@ -89,7 +89,7 @@ This project is designed to be built with:
             |
             V
 +--------------------------------+
-|  Get /api/insight/charge/{id}  |
+|  GET /api/insight/charge/{id}  |
 +--------------------------------+
 ```
 
