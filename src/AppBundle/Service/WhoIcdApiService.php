@@ -295,6 +295,29 @@ class WhoIcdApiService
     }
 
     /**
+     * Check if an ICD-10 code exists.
+     *
+     * @param string $releaseId Release year (e.g., '2022')
+     * @param string $code      ICD-10 code to check
+     * @return bool True if code exists, false otherwise
+     * @throws \RuntimeException on API error (network, auth, server - not 404)
+     */
+    public function codeExists(string $releaseId, string $code): bool
+    {
+        try {
+            $this->getEntity($releaseId, $code);
+            return true;
+        } catch (\RuntimeException $e) {
+            // Check if it's a 404 (not found) vs other errors
+            if (strpos($e->getMessage(), '(404)') !== false) {
+                return false;
+            }
+            // Re-throw other errors (network, auth, server errors)
+            throw $e;
+        }
+    }
+
+    /**
      * Get entity details formatted for frontend display.
      *
      * @param string $releaseId Release year
