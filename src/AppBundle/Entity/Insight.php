@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use AppBundle\Entity\Traits\CreatedAtTrait;
 use AppBundle\Enums\InsightSeverityEnum;
+use AppBundle\ValueObject\AnalyzeRuleForChargeValueObject;
 
 /**
  * Insight entity representing a rule-generated finding.
@@ -63,6 +64,25 @@ class Insight
      */
     private $rule;
 
+    /**
+     * Create an Insight from an analyzed charge that matched a rule.
+     *
+     * @param AnalyzeRuleForChargeValueObject $analyzeRuleForCharge
+     * @return self
+     */
+    public static function createFromAnalyzeRuleForCharge(AnalyzeRuleForChargeValueObject $analyzeRuleForCharge): self
+    {
+        $ruleDefinition = $analyzeRuleForCharge->getRuleDefinition();
+
+        $self = new self();
+        $self->setCharge($analyzeRuleForCharge->getCharge());
+        $self->setRule($analyzeRuleForCharge->getRuleEntity());
+        $self->setSeverity($ruleDefinition->getSeverity());
+        $self->setMessage($ruleDefinition->getMessage());
+        $self->setRevenueAtRiskInCents($analyzeRuleForCharge->resolveRevenueAtRiskInCents());
+
+        return $self;
+    }
 
     /**
      * Get id.

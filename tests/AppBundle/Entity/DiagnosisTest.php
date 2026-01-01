@@ -4,6 +4,7 @@ namespace Tests\AppBundle\Entity;
 
 use AppBundle\Entity\Charge;
 use AppBundle\Entity\Diagnosis;
+use AppBundle\Entity\ProcedureCode;
 use PHPUnit\Framework\TestCase;
 
 class DiagnosisTest extends TestCase
@@ -50,7 +51,9 @@ class DiagnosisTest extends TestCase
     {
         $diagnosis = new Diagnosis();
         $charge = new Charge();
-        $charge->setProcedureCode('99213');
+        $procedureCode = new ProcedureCode();
+        $procedureCode->setCode('99213');
+        $charge->addProcedureCode($procedureCode);
 
         $diagnosis->addCharge($charge);
 
@@ -63,7 +66,9 @@ class DiagnosisTest extends TestCase
     {
         $diagnosis = new Diagnosis();
         $charge = new Charge();
-        $charge->setProcedureCode('99213');
+        $procedureCode = new ProcedureCode();
+        $procedureCode->setCode('99213');
+        $charge->addProcedureCode($procedureCode);
 
         $diagnosis->addCharge($charge);
         $diagnosis->addCharge($charge);
@@ -75,7 +80,9 @@ class DiagnosisTest extends TestCase
     {
         $diagnosis = new Diagnosis();
         $charge = new Charge();
-        $charge->setProcedureCode('99213');
+        $procedureCode = new ProcedureCode();
+        $procedureCode->setCode('99213');
+        $charge->addProcedureCode($procedureCode);
 
         $diagnosis->addCharge($charge);
         $this->assertCount(1, $diagnosis->getCharges());
@@ -104,7 +111,9 @@ class DiagnosisTest extends TestCase
         $diagnosis2->setDescription('Hypertension');
 
         $charge = new Charge();
-        $charge->setProcedureCode('99214');
+        $procedureCode = new ProcedureCode();
+        $procedureCode->setCode('99214');
+        $charge->addProcedureCode($procedureCode);
 
         // Add from charge side
         $charge->addDiagnosis($diagnosis1);

@@ -4,6 +4,7 @@ namespace Tests\AppBundle\Entity;
 
 use AppBundle\Entity\Charge;
 use AppBundle\Entity\Insight;
+use AppBundle\Entity\ProcedureCode;
 use AppBundle\Entity\Rule;
 use DateTime;
 use DateTimeImmutable;
@@ -70,7 +71,9 @@ class InsightTest extends TestCase
     public function testCanSetAndGetCharge()
     {
         $charge = new Charge();
-        $charge->setProcedureCode('99213');
+        $procedureCode = new ProcedureCode();
+        $procedureCode->setCode('99213');
+        $charge->addProcedureCode($procedureCode);
         $charge->setChargeAmountCents(15000);
         $charge->setPayerType('insurance');
         $charge->setServiceDate(new DateTime('2025-01-15'));
@@ -144,7 +147,9 @@ class InsightTest extends TestCase
     public function testCanCreateCompleteInsight()
     {
         $charge = new Charge();
-        $charge->setProcedureCode('99214');
+        $procedureCode = new ProcedureCode();
+        $procedureCode->setCode('99214');
+        $charge->addProcedureCode($procedureCode);
         $charge->setChargeAmountCents(20000);
         $charge->setPayerType('medicare');
         $charge->setServiceDate(new DateTime('2025-01-20'));
@@ -172,7 +177,9 @@ class InsightTest extends TestCase
     public function testInsightChargeRelationshipBidirectional()
     {
         $charge = new Charge();
-        $charge->setProcedureCode('99215');
+        $procedureCode = new ProcedureCode();
+        $procedureCode->setCode('99215');
+        $charge->addProcedureCode($procedureCode);
         $charge->setChargeAmountCents(25000);
         $charge->setPayerType('insurance');
         $charge->setServiceDate(new DateTime('2025-01-25'));

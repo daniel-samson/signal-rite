@@ -5,6 +5,7 @@ namespace Tests\AppBundle\Entity;
 use AppBundle\Entity\Charge;
 use AppBundle\Entity\Department;
 use AppBundle\Entity\Patient;
+use AppBundle\Entity\ProcedureCode;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
@@ -47,7 +48,9 @@ class ChargeRelationshipTest extends KernelTestCase
         $department->setName('Cardiology');
 
         $charge = new Charge();
-        $charge->setProcedureCode('99213');
+        $procedureCode = new ProcedureCode();
+        $procedureCode->setCode('99213');
+        $charge->addProcedureCode($procedureCode);
         $charge->setChargeAmountCents(15000);
         $charge->setPayerType('insurance');
         $charge->setServiceDate(new DateTime('2025-01-15'));
@@ -66,7 +69,9 @@ class ChargeRelationshipTest extends KernelTestCase
         $patient->setSex('M');
 
         $charge = new Charge();
-        $charge->setProcedureCode('99214');
+        $procedureCode = new ProcedureCode();
+        $procedureCode->setCode('99214');
+        $charge->addProcedureCode($procedureCode);
         $charge->setChargeAmountCents(20000);
         $charge->setPayerType('self_pay');
         $charge->setServiceDate(new DateTime('2025-01-20'));
@@ -89,7 +94,9 @@ class ChargeRelationshipTest extends KernelTestCase
         $patient->setSex('F');
 
         $charge = new Charge();
-        $charge->setProcedureCode('99215');
+        $procedureCode = new ProcedureCode();
+        $procedureCode->setCode('99215');
+        $charge->addProcedureCode($procedureCode);
         $charge->setChargeAmountCents(25000);
         $charge->setPayerType('medicare');
         $charge->setServiceDate(new DateTime('2025-01-25'));

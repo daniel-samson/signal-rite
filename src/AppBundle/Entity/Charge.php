@@ -2,9 +2,9 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\Controller\Api\ChargeController;
 use AppBundle\Entity\Traits\CreatedAtTrait;
 use AppBundle\Enums\ChargePayerTypeEnum;
-use AppBundle\Enums\ChargeProcedureCodeEnum;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -20,6 +20,7 @@ use Doctrine\Common\Collections\Collection;
  * @see Insight for rule-generated findings
  * @see Rule for compliance and validation rules
  * @see Diagnosis for ICD-10 diagnosis codes (many-to-many)
+ * @see ProcedureCode for CPT/HCPCS procedure codes (many-to-many)
  */
 class Charge
 {
@@ -31,9 +32,13 @@ class Charge
     private $id;
 
     /**
-     * @var string CPT / HCPCS-style code
+     * Collection of CPT/HCPCS procedure codes.
+     *
+     * Codes may include modifiers (e.g., "99213-25", "70553-TC").
+     *
+     * @var Collection|ProcedureCode[]
      */
-    private $procedureCode;
+    private $procedureCodes;
 
     /**
      * @var int Charge amount in cents
@@ -88,6 +93,7 @@ class Charge
     {
         $this->insights = new ArrayCollection();
         $this->diagnoses = new ArrayCollection();
+        $this->procedureCodes = new ArrayCollection();
     }
 
     /**
@@ -130,39 +136,6 @@ class Charge
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Get procedureCode.
-     *  - Procedures
-     *  - Services
-     *  - Supplies
-     *  - Non-physician services
-     *
-     * @return string
-     */
-    public function getProcedureCode(): string
-    {
-        return $this->procedureCode;
-    }
-
-    /**
-     * Set procedureCode.
-     *  - Procedures
-     *  - Services
-     *  - Supplies
-     *  - Non-physician services
-     *
-     * @param string $procedureCode CPT / HCPCS-style code
-     * @See ChargeProcedureCodeEnum for valid code and validation
-     *
-     * @return Charge
-     */
-    public function setProcedureCode(string $procedureCode): self
-    {
-        $this->procedureCode = ChargeProcedureCodeEnum::normalize($procedureCode);
-
-        return $this;
     }
 
     /**
@@ -227,11 +200,11 @@ class Charge
     /**
      * Set serviceDate.
      *
-     * @param DateTime $serviceDate
+     * @param \DateTimeImmutable $serviceDate
      *
      * @return Charge
      */
-    public function setServiceDate(DateTime $serviceDate): self
+    public function setServiceDate(\DateTimeImmutable $serviceDate): self
     {
         $this->serviceDate = $serviceDate;
 
@@ -324,5 +297,186 @@ class Charge
         }
 
         return $this;
+    }
+
+    /**
+     * Get procedure codes.
+     *
+     * @return Collection|ProcedureCode[]
+     */
+    public function getProcedureCodes(): Collection
+    {
+        return $this->procedureCodes;
+    }
+
+    /**
+     * Add procedure code.
+     *
+     * @param ProcedureCode $procedureCode
+     *
+     * @return Charge
+     */
+    public function addProcedureCode(ProcedureCode $procedureCode): self
+    {
+        if (!$this->procedureCodes->contains($procedureCode)) {
+            $this->procedureCodes[] = $procedureCode;
+            $procedureCode->addCharge($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Remove procedure code.
+     *
+     * @param ProcedureCode $procedureCode
+     *
+     * @return Charge
+     */
+    public function removeProcedureCode(ProcedureCode $procedureCode): self
+    {
+        if ($this->procedureCodes->removeElement($procedureCode)) {
+            $procedureCode->removeCharge($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Check if any procedure code has a specific modifier.
+     *
+     * @param string $modifier The modifier to check (e.g., "25", "59")
+     *
+     * @return bool
+     */
+    public function hasModifier(string $modifier): bool
+    {
+        foreach ($this->procedureCodes as $pc) {
+            if ($pc->hasModifier($modifier)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Build evaluation context for the Rules Engine.
+     *
+     * Returns an array of charge data formatted for php-rule-parser evaluation.
+     * Field names use snake_case to match YAML rule conditions.
+     *
+     * Includes:
+     * - procedure_code: First CPT/HCPCS code (for single-code rules)
+     * - procedure_codes: Array of all CPT/HCPCS codes (may include modifiers)
+     * - diagnosis_codes: Array of ICD-10 diagnosis codes
+     * - charge_amount_cents: Amount in cents
+     * - payer_type: Payer category (MEDICARE, MEDICAID, etc.)
+     * - department_code: Department identifier
+     * - patient_type: Patient category (INPATIENT, OUTPATIENT, etc.)
+     * - Computed fields: is_weekend, is_late_night, day_of_week, hour_of_day
+     * - Modifier flags: has_modifier_25, has_modifier_59, has_modifier_tc, has_modifier_26
+     *
+     * @return array<string, mixed>
+     */
+    public function toRuleContext(): array
+    {
+        // Extract ICD-10 diagnosis codes from related entities
+        $diagnosisCodes = [];
+        foreach ($this->diagnoses as $diagnosis) {
+            $diagnosisCodes[] = $diagnosis->getCode();
+        }
+
+        // Extract CPT/HCPCS procedure codes from related entities
+        $procedureCodesArray = [];
+        foreach ($this->procedureCodes as $pc) {
+            $procedureCodesArray[] = $pc->getCode();
+        }
+
+        $serviceDate = $this->getServiceDate();
+        $dayOfWeek = (int) $serviceDate->format('N'); // 1=Mon, 7=Sun
+        $hour = (int) $serviceDate->format('G');
+
+        return [
+            // Core charge fields (CPT/HCPCS)
+            'procedure_code' => $procedureCodesArray[0] ?? '',
+            'procedure_codes' => $procedureCodesArray,
+            'charge_amount_cents' => $this->getChargeAmountCents(),
+            'payer_type' => $this->getPayerType(),
+            'service_date' => $serviceDate->format('Y-m-d'),
+
+            // ICD-10 diagnosis codes (from many-to-many relationship)
+            'diagnosis_codes' => $diagnosisCodes,
+
+            // Related entities
+            'department_code' => $this->getDepartment() ? $this->getDepartment()->getCode() : '',
+            'patient_type' => $this->getPatient() ? $this->getPatient()->getType() : '',
+
+            // Computed fields for rule convenience
+            'is_weekend' => $dayOfWeek >= 6,
+            'is_late_night' => $hour >= 22 || $hour < 6,
+            'day_of_week' => $dayOfWeek,
+            'hour_of_day' => $hour,
+
+            // Modifier flags (computed from procedureCodes)
+            'has_modifier_25' => $this->hasModifier('25'),
+            'has_modifier_59' => $this->hasModifier('59'),
+            'has_modifier_tc' => $this->hasModifier('TC'),
+            'has_modifier_26' => $this->hasModifier('26'),
+
+            // Placeholder fields for extended rules
+            // These would be computed by additional services
+            'same_day_count' => 1,
+            'duplicate_count' => 0,
+            'is_covered' => true,
+        ];
+    }
+
+    /**
+     * Build Http Json Response Context for Json API Responses
+     *
+     * e.g data:
+     *
+     * @See ChargeController
+     * @return array
+     */
+    public function toHttpJsonResponseContext(): array
+    {
+        // Extract ICD-10 diagnosis codes from related entities
+        $diagnosisCodes = [];
+        foreach ($this->diagnoses as $diagnosis) {
+            $diagnosis[] = [
+                'type' => 'PatientIdentity',
+                'data' => [ 'id' => $diagnosis->getCode()]
+            ];
+        }
+
+        // Extract CPT/HCPCS procedure codes from related entities
+        $procedureCodesArray = [];
+        foreach ($this->procedureCodes as $pc) {
+            $procedureCodesArray[] = [
+                'type' => 'ProcedureCodeIdentity',
+                'data' => [ 'id' => $pc->getCode()]
+            ];
+        }
+
+        return [
+            'type' => 'Charge',
+            'id' => $this->id,
+            'attributes' => [
+                'charge_amount_cents' => $this->getChargeAmountCents(),
+                'payer_type' => $this->getPayerType(),
+                'service_date' => $this->getServiceDate()->format('Y-m-d'),
+                'department_code' => $this->getDepartment() ? $this->getDepartment()->getCode() : '',
+            ],
+            'relationships' => [
+                'patent' => [
+                    'type' => 'PatientIdentity',
+                    'data' => [ 'id' => $this->patient->getId()]
+                ],
+                'procedure_codes' => $procedureCodesArray,
+                'diagnosis_codes' => $diagnosisCodes,
+            ],
+        ];
     }
 }

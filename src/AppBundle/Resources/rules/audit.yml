@@ -11,6 +11,7 @@ rules:
       same_day_count > 5 &&
       procedure_code.test(/^99[0-9]{3}$/)
     message: "Unusual volume of identical E&M charges on same day"
+    revenue_at_risk_in_cents: charge_amount_cents
     tags: [duplicate, pattern, volume]
     enabled: true
 
@@ -21,9 +22,10 @@ rules:
     severity: low
     condition: >
       is_weekend === true &&
-      charge_amount > 500000 &&
+      charge_amount_cents > 500000 &&
       department_code not in ["ER", "ICU", "LABOR", "OR"]
     message: "High-dollar weekend charge outside emergency departments"
+    revenue_at_risk_in_cents: charge_amount_cents
     tags: [weekend, scheduling, audit]
     enabled: true
 
@@ -36,6 +38,7 @@ rules:
       procedure_code.startsWith("33") &&
       diagnosis_codes.join(",").indexOf("I") < 0
     message: "Cardiac procedure code without cardiovascular diagnosis (I-codes)"
+    revenue_at_risk_in_cents: charge_amount_cents
     tags: [diagnosis-mismatch, cardiology]
     enabled: true
 
@@ -49,6 +52,7 @@ rules:
       department_code not in ["ER", "ICU", "LABOR"] &&
       patient_type != "INPATIENT"
     message: "Non-emergency charge posted during late night hours"
+    revenue_at_risk_in_cents: charge_amount_cents
     tags: [timing, audit, pattern]
     enabled: true
 
@@ -60,8 +64,9 @@ rules:
     condition: >
       patient_type == "OUTPATIENT" &&
       procedure_code.test(/^[1-6][0-9]{4}$/) &&
-      charge_amount > 750000
+      charge_amount_cents > 750000
     message: "Outpatient surgery charge exceeds typical threshold"
+    revenue_at_risk_in_cents: charge_amount_cents
     tags: [outpatient, surgery, review]
     enabled: true
 
@@ -72,8 +77,9 @@ rules:
     severity: medium
     condition: >
       payer_type == "SELF_PAY" &&
-      charge_amount > 200000
+      charge_amount_cents > 200000
     message: "High-dollar self-pay charge - verify financial counseling completed"
+    revenue_at_risk_in_cents: charge_amount_cents
     tags: [self-pay, financial, counseling]
     enabled: true
 
@@ -84,8 +90,9 @@ rules:
     severity: high
     condition: >
       duplicate_count > 1 &&
-      charge_amount > 50000
+      charge_amount_cents > 50000
     message: "Potential duplicate charge detected"
+    revenue_at_risk_in_cents: charge_amount_cents
     tags: [duplicate, billing-error]
     enabled: true
 
@@ -98,5 +105,6 @@ rules:
       diagnosis_codes.join(",").test(/\.(9|8)[0-9]?$/) &&
       payer_type in ["MEDICARE", "MEDICAID"]
     message: "High-severity diagnosis code pattern detected"
+    revenue_at_risk_in_cents: charge_amount_cents
     tags: [upcoding, diagnosis, pattern]
     enabled: true

@@ -10,8 +10,9 @@ rules:
     condition: >
       procedure_code.startsWith("70") &&
       payer_type == "MEDICARE" &&
-      charge_amount < 50000
+      charge_amount_cents < 50000
     message: "MRI charge is below Medicare minimum threshold of $500.00"
+    revenue_at_risk_in_cents: charge_amount_cents
     tags: [imaging, medicare, undercharge]
     enabled: true
 
@@ -23,8 +24,9 @@ rules:
     condition: >
       procedure_code.startsWith("71") &&
       payer_type in ["MEDICARE", "MEDICAID"] &&
-      charge_amount < 30000
+      charge_amount_cents < 30000
     message: "CT scan charge is below expected threshold of $300.00"
+    revenue_at_risk_in_cents: charge_amount_cents
     tags: [imaging, undercharge]
     enabled: true
 
@@ -34,8 +36,9 @@ rules:
     description: Flags charges exceeding maximum allowed amount
     severity: high
     condition: >
-      charge_amount > 1000000
+      charge_amount_cents > 1000000
     message: "Charge amount exceeds $10,000 maximum threshold"
+    revenue_at_risk_in_cents: charge_amount_cents
     tags: [overcharge, audit]
     enabled: true
 
@@ -45,9 +48,10 @@ rules:
     description: Identifies charges with zero amount that may indicate missed billing
     severity: low
     condition: >
-      charge_amount === 0 &&
+      charge_amount_cents === 0 &&
       payer_type not in ["CHARITY", "WRITE_OFF"]
     message: "Zero dollar charge detected for billable payer type"
+    revenue_at_risk_in_cents: charge_amount_cents
     tags: [revenue-leakage, zero-charge]
     enabled: true
 
@@ -59,8 +63,9 @@ rules:
     condition: >
       procedure_code.test(/^992[0-9]{2}$/) &&
       payer_type == "MEDICARE" &&
-      charge_amount < 7500
+      charge_amount_cents < 7500
     message: "E&M code charge below typical Medicare reimbursement"
+    revenue_at_risk_in_cents: charge_amount_cents
     tags: [e-and-m, undercharge, medicare]
     enabled: true
 
@@ -71,8 +76,9 @@ rules:
     severity: high
     condition: >
       procedure_code.test(/^[1-6][0-9]{4}$/) &&
-      charge_amount < 100000 &&
+      charge_amount_cents < 100000 &&
       payer_type in ["MEDICARE", "MEDICAID", "COMMERCIAL"]
     message: "Surgical procedure charge below minimum expected amount"
+    revenue_at_risk_in_cents: charge_amount_cents
     tags: [surgery, undercharge]
     enabled: true

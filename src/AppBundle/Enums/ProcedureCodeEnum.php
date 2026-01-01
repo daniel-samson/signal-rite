@@ -45,7 +45,7 @@ use PhpCompatible\Enum\Value;
  * @method static Value modifierDistinctProceduralService()
  * @method static Value modifierTelehealth()
  */
-final class ChargeProcedureCodeEnum extends Enum
+final class ProcedureCodeEnum extends Enum
 {
     use NormalizesValuesTrait;
 
@@ -141,11 +141,15 @@ final class ChargeProcedureCodeEnum extends Enum
      */
     public static function is(string $code): bool
     {
-        $code = strtoupper(trim($code));
-
+        $code = self::normalize($code);
         return preg_match(
                 '/^(\d{5}|[A-Z]\d{4})(-[A-Z0-9]{2})*$/',
                 $code
             ) === 1;
+    }
+
+    public static function normalize(string $code): string
+    {
+        return strtoupper(trim($code));
     }
 }

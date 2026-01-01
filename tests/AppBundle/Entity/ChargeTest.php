@@ -7,6 +7,7 @@ use AppBundle\Entity\Department;
 use AppBundle\Entity\Diagnosis;
 use AppBundle\Entity\Insight;
 use AppBundle\Entity\Patient;
+use AppBundle\Entity\ProcedureCode;
 use DateTime;
 use PHPUnit\Framework\TestCase;
 
@@ -19,20 +20,70 @@ class ChargeTest extends TestCase
         $this->assertInstanceOf(Charge::class, $charge);
     }
 
-    public function testCanSetAndGetProcedureCode()
+    public function testProcedureCodesCollectionIsInitialized()
     {
         $charge = new Charge();
-        $charge->setProcedureCode('99213');
 
-        $this->assertEquals('99213', $charge->getProcedureCode());
+        $this->assertCount(0, $charge->getProcedureCodes());
     }
 
-    public function testProcedureCodeIsNormalized()
+    public function testCanAddProcedureCode()
     {
         $charge = new Charge();
-        $charge->setProcedureCode('  99213  ');
+        $procedureCode = new ProcedureCode();
+        $procedureCode->setCode('99213');
+        $procedureCode->setDescription('Office visit');
 
-        $this->assertEquals('99213', $charge->getProcedureCode());
+        $charge->addProcedureCode($procedureCode);
+
+        $this->assertCount(1, $charge->getProcedureCodes());
+        $this->assertTrue($charge->getProcedureCodes()->contains($procedureCode));
+        $this->assertTrue($procedureCode->getCharges()->contains($charge));
+    }
+
+    public function testAddProcedureCodeIsIdempotent()
+    {
+        $charge = new Charge();
+        $procedureCode = new ProcedureCode();
+        $procedureCode->setCode('99213');
+
+        $charge->addProcedureCode($procedureCode);
+        $charge->addProcedureCode($procedureCode);
+
+        $this->assertCount(1, $charge->getProcedureCodes());
+    }
+
+    public function testCanRemoveProcedureCode()
+    {
+        $charge = new Charge();
+        $procedureCode = new ProcedureCode();
+        $procedureCode->setCode('99213');
+
+        $charge->addProcedureCode($procedureCode);
+        $this->assertCount(1, $charge->getProcedureCodes());
+
+        $charge->removeProcedureCode($procedureCode);
+        $this->assertCount(0, $charge->getProcedureCodes());
+        $this->assertFalse($procedureCode->getCharges()->contains($charge));
+    }
+
+    public function testHasModifierReturnsTrueWhenModifierPresent()
+    {
+        $charge = new Charge();
+        $procedureCode = new ProcedureCode();
+        $procedureCode->setCode('99213-25');
+
+        $charge->addProcedureCode($procedureCode);
+
+        $this->assertTrue($charge->hasModifier('25'));
+        $this->assertFalse($charge->hasModifier('59'));
+    }
+
+    public function testHasModifierReturnsFalseWhenNoProcedureCodes()
+    {
+        $charge = new Charge();
+
+        $this->assertFalse($charge->hasModifier('25'));
     }
 
     public function testCanSetAndGetChargeAmountCents()
@@ -145,7 +196,6 @@ class ChargeTest extends TestCase
     {
         $charge = new Charge();
 
-        $this->assertSame($charge, $charge->setProcedureCode('99213'));
         $this->assertSame($charge, $charge->setChargeAmountCents(100));
         $this->assertSame($charge, $charge->setPayerType('insurance'));
         $this->assertSame($charge, $charge->setServiceDate(new DateTime()));

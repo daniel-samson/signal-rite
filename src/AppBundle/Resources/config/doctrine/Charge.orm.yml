@@ -9,10 +9,6 @@ AppBundle\Entity\Charge:
             generator:
                 strategy: AUTO
     fields:
-        procedureCode:
-            type: string
-            length: '50'
-            column: procedure_code
         chargeAmountCents:
             type: integer
             column: charge_amount_cents
@@ -56,4 +52,15 @@ AppBundle\Entity\Charge:
                         referencedColumnName: id
                 inverseJoinColumns:
                     diagnosis_id:
+                        referencedColumnName: id
+        procedureCodes:
+            targetEntity: AppBundle\Entity\ProcedureCode
+            inversedBy: charges
+            joinTable:
+                name: charge_procedure_code
+                joinColumns:
+                    charge_id:
+                        referencedColumnName: id
+                inverseJoinColumns:
+                    procedure_code_id:
                         referencedColumnName: id

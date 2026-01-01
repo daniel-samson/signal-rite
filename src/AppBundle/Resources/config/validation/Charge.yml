@@ -1,13 +1,7 @@
 AppBundle\Entity\Charge:
   properties:
-    procedureCode:
-      - NotBlank: ~
-      - AppBundle\Validator\Constraints\EnumValue:
-          enumClass: AppBundle\Enums\ChargeProcedureCodeEnum
-          message: 'Invalid procedure code.'
-
     payerType:
       - NotBlank: ~
       - AppBundle\Validator\Constraints\EnumValue:
-          enumClass: AppBundle\Enums\ChargeProcedureCodeEnum
+          enumClass: AppBundle\Enums\ChargePayerTypeEnum
           message: 'Invalid payer type.'

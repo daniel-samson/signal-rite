@@ -1,7 +1,7 @@
 AppBundle\Entity\Insight:
   properties:
-    type:
+    severity:
       - NotBlank: ~
       - AppBundle\Validator\Constraints\EnumValue:
           enumClass: AppBundle\Enums\InsightSeverityEnum
-          message: 'Invalid type.'
+          message: 'Invalid severity.'

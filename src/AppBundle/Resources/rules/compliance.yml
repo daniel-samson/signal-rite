@@ -10,6 +10,7 @@ rules:
     condition: >
       diagnosis_codes.join("") === ""
     message: "Charge is missing required diagnosis code"
+    revenue_at_risk_in_cents: charge_amount_cents
     tags: [compliance, diagnosis, required]
     enabled: true
 
@@ -22,6 +23,7 @@ rules:
       procedure_code in ["99215", "99205", "99223", "99233", "99236"] &&
       payer_type in ["MEDICARE", "MEDICAID"]
     message: "High-level E&M code requires documentation review"
+    revenue_at_risk_in_cents: charge_amount_cents
     tags: [e-and-m, documentation, audit-risk]
     enabled: true
 
@@ -34,6 +36,7 @@ rules:
       procedure_code in ["59400", "59510", "59610", "59618"] &&
       payer_type == "MEDICARE"
     message: "Global OB code may require modifier for Medicare billing"
+    revenue_at_risk_in_cents: charge_amount_cents
     tags: [modifier, obstetrics, medicare]
     enabled: true
 
@@ -46,6 +49,7 @@ rules:
       procedure_code in ["99285", "99284"] &&
       department_code == "ER"
     message: "High-acuity ER code requires acuity documentation"
+    revenue_at_risk_in_cents: charge_amount_cents
     tags: [emergency, documentation, acuity]
     enabled: true
 
@@ -57,6 +61,7 @@ rules:
     condition: >
       procedure_code in ["99291", "99292"]
     message: "Critical care code requires documented time spent"
+    revenue_at_risk_in_cents: charge_amount_cents
     tags: [critical-care, documentation, time]
     enabled: true
 
@@ -69,6 +74,7 @@ rules:
       procedure_code.test(/^992[0-9]{2}$/) &&
       has_modifier_25 === true
     message: "E&M with modifier 25 requires separate identifiable service documentation"
+    revenue_at_risk_in_cents: charge_amount_cents
     tags: [modifier, e-and-m, same-day]
     enabled: true
 
@@ -81,5 +87,6 @@ rules:
       payer_type == "MEDICARE" &&
       is_covered === false
     message: "Non-covered Medicare service requires Advance Beneficiary Notice"
+    revenue_at_risk_in_cents: charge_amount_cents
     tags: [medicare, abn, compliance]
     enabled: true

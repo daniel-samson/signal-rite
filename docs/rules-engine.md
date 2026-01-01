@@ -31,17 +31,51 @@ rules:
 
 ### Variable Context
 
-When rules are evaluated, the following variables are available from the Charge entity:
+When rules are evaluated, the following variables are available from the Charge entity via `toRuleContext()`:
+
+**Procedure Codes (CPT/HCPCS):**
 
 | Variable | Type | Description |
 |----------|------|-------------|
-| `procedure_code` | string | CPT/HCPCS procedure code |
-| `charge_amount` | int | Amount in cents |
+| `procedure_code` | string | First **CPT/HCPCS** code (deprecated, use `procedure_codes`) |
+| `procedure_codes` | array | All **CPT/HCPCS** procedure codes, may include modifiers (e.g., ["99213", "99213-25", "70553-TC"]) |
+
+**Diagnosis Codes (ICD-10):**
+
+| Variable | Type | Description |
+|----------|------|-------------|
+| `diagnosis_codes` | array | **ICD-10** diagnosis codes (e.g., ["I10", "E11.9"]) |
+
+**Charge Data:**
+
+| Variable | Type | Description |
+|----------|------|-------------|
+| `charge_amount_cents` | int | Amount in cents (e.g., 50000 = $500.00) |
 | `payer_type` | string | MEDICARE, MEDICAID, COMMERCIAL, SELF_PAY |
 | `service_date` | string | ISO date (YYYY-MM-DD) |
 | `department_code` | string | Department identifier |
-| `diagnosis_codes` | array | Array of ICD-10 diagnosis codes |
 | `patient_type` | string | INPATIENT, OUTPATIENT, EMERGENCY |
+
+**Modifier Flags:**
+
+| Variable | Type | Description |
+|----------|------|-------------|
+| `has_modifier_25` | bool | True if any procedure has modifier 25 (separate E&M) |
+| `has_modifier_59` | bool | True if any procedure has modifier 59 (distinct procedure) |
+| `has_modifier_tc` | bool | True if any procedure has modifier TC (technical component) |
+| `has_modifier_26` | bool | True if any procedure has modifier 26 (professional component) |
+
+**Computed Fields:**
+
+| Variable | Type | Description |
+|----------|------|-------------|
+| `is_weekend` | bool | True if service date is Saturday or Sunday |
+| `is_late_night` | bool | True if service hour is 22:00-06:00 |
+| `day_of_week` | int | 1=Monday, 7=Sunday |
+| `hour_of_day` | int | 0-23 |
+| `same_day_count` | int | Count of identical charges same day (placeholder) |
+| `duplicate_count` | int | Potential duplicate count (placeholder) |
+| `is_covered` | bool | Service is covered by payer (placeholder) |
 
 ---
 
@@ -52,19 +86,19 @@ When rules are evaluated, the following variables are available from the Charge 
 | Operator | Description | Example |
 |----------|-------------|---------|
 | `==` | Equal (loose) | `payer_type == "MEDICARE"` |
-| `===` | Equal (strict) | `charge_amount === 50000` |
+| `===` | Equal (strict) | `charge_amount_cents === 50000` |
 | `!=` | Not equal (loose) | `payer_type != "SELF_PAY"` |
-| `!==` | Not equal (strict) | `charge_amount !== 0` |
-| `>` | Greater than | `charge_amount > 100000` |
-| `>=` | Greater than or equal | `charge_amount >= 50000` |
-| `<` | Less than | `charge_amount < 1000` |
-| `<=` | Less than or equal | `charge_amount <= 500000` |
+| `!==` | Not equal (strict) | `charge_amount_cents !== 0` |
+| `>` | Greater than | `charge_amount_cents > 100000` |
+| `>=` | Greater than or equal | `charge_amount_cents >= 50000` |
+| `<` | Less than | `charge_amount_cents < 1000` |
+| `<=` | Less than or equal | `charge_amount_cents <= 500000` |
 
 ### Logical Operators
 
 | Operator | Description | Example |
 |----------|-------------|---------|
-| `&&` | Logical AND | `payer_type == "MEDICARE" && charge_amount > 50000` |
+| `&&` | Logical AND | `payer_type == "MEDICARE" && charge_amount_cents > 50000` |
 | `\|\|` | Logical OR | `payer_type == "MEDICAID" \|\| payer_type == "MEDICARE"` |
 
 ### Containment Operators
@@ -107,7 +141,7 @@ When rules are evaluated, the following variables are available from the Charge 
 
 | Function | Description | Example |
 |----------|-------------|---------|
-| `parseInt(str)` | Parse string to integer | `parseInt(charge_amount) > 50000` |
+| `parseInt(str)` | Parse string to integer | `parseInt(charge_amount_cents) > 50000` |
 | `parseFloat(str)` | Parse string to float | `parseFloat(rate) >= 1.5` |
 
 ---
@@ -127,8 +161,8 @@ rules:
     condition: >
       procedure_code.startsWith("70") &&
       payer_type == "MEDICARE" &&
-      charge_amount < 50000
-    message: "MRI charge ${charge_amount} is below Medicare minimum threshold of $500.00"
+      charge_amount_cents < 50000
+    message: "MRI charge ${charge_amount_cents} is below Medicare minimum threshold of $500.00"
     tags: [imaging, medicare, undercharge]
 
   # Overcharging Detection
@@ -138,8 +172,8 @@ rules:
     description: Flags charges exceeding maximum allowed amount
     severity: high
     condition: >
-      charge_amount > 1000000
-    message: "Charge amount ${charge_amount} exceeds $10,000 maximum threshold"
+      charge_amount_cents > 1000000
+    message: "Charge amount ${charge_amount_cents} exceeds $10,000 maximum threshold"
     tags: [overcharge, audit]
 
   # Zero Charge Detection
@@ -149,7 +183,7 @@ rules:
     description: Identifies charges with zero amount that may indicate missed billing
     severity: low
     condition: >
-      charge_amount === 0 &&
+      charge_amount_cents === 0 &&
       payer_type not in ["CHARITY", "WRITE_OFF"]
     message: "Zero dollar charge detected for billable payer type"
     tags: [revenue-leakage, zero-charge]
@@ -221,7 +255,7 @@ rules:
     severity: low
     condition: >
       is_weekend === true &&
-      charge_amount > 500000 &&
+      charge_amount_cents > 500000 &&
       department_code not in ["ER", "ICU", "LABOR"]
     message: "High-dollar weekend charge outside emergency departments"
     tags: [weekend, audit, scheduling]
@@ -257,6 +291,52 @@ condition: diagnosis_codes.join(",").test(/[A-Z][0-9]{2}/)
 
 # Case-insensitive match
 condition: department_code.test(/radiology/i)
+```
+
+---
+
+## Working with Multiple Procedure Codes
+
+A charge can have multiple CPT/HCPCS procedure codes. Codes with modifiers are stored as separate entries (e.g., "99213" and "99213-25" are distinct codes in the database).
+
+```yaml
+# Check if any procedure code is an E&M code
+condition: procedure_codes.join(",").test(/992[0-9]{2}/)
+
+# Check for specific code in the array
+condition: procedure_codes.indexOf("99213") >= 0
+
+# Check for imaging procedures (70xxx codes)
+condition: procedure_codes.join(",").test(/70[0-9]{3}/)
+
+# Check for specific code with modifier
+condition: procedure_codes.indexOf("99213-25") >= 0
+
+# Check for any modifier 59 in the codes
+condition: procedure_codes.join(",").indexOf("-59") >= 0
+```
+
+## Working with Modifiers
+
+Modifiers are stored as part of the procedure code (e.g., "99213-25"). Use the built-in modifier flags for common modifiers, or search the `procedure_codes` array directly:
+
+```yaml
+# Check for modifier 25 (separate E&M service)
+condition: has_modifier_25 === true
+
+# E&M with modifier 25 requires documentation
+condition: >
+  procedure_codes.join(",").test(/992[0-9]{2}/) &&
+  has_modifier_25 === true
+
+# Professional component only (modifier 26)
+condition: has_modifier_26 === true
+
+# Technical component only (modifier TC)
+condition: has_modifier_tc === true
+
+# Check for any code with modifier 59
+condition: procedure_codes.join(",").test(/-59($|,)/)
 ```
 
 ---
