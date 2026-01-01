@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AppBundle\Controller;
+namespace AppBundle\Controller\Api;
 
 use AppBundle\Service\WhoIcdApiService;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
