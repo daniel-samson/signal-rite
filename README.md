@@ -1,6 +1,13 @@
-# SignalRite
+<div align="center">
+  <a href="https://phpcompatible.dev">
+    <img src="web/images/signalrite_centered_logo.png" alt="SignalRite" width="auto" height="128">
+  </a>
+  <p>
+    <strong>
+Mini Revenue Integrity & Compliance Analyzer</strong>
+  </p>
+</div>
 
-Mini Revenue Integrity & Compliance Analyzer
 
 ## Purpose
 
