@@ -59,3 +59,12 @@ main {
         }
     }
 }
+
+a:link, a:visited {
+    color: var(--color-indigo-600);
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}

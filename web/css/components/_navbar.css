@@ -93,6 +93,7 @@
 
             a:hover {
                 background-color: light-dark(#eee, #222);
+                text-decoration: none;
             }
         }
     }
