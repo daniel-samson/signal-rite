@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dashboard - Signal Rite{% endblock %}
+
+{% block body %}
+    {% embed "components/_header.html.twig" %}
+        {% block title %}Dashboard{% endblock %}
+        {% block subline %}Risk Statistic from analysis.{% endblock %}
+    {% endembed %}
+{% endblock %}

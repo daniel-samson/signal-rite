@@ -20,16 +20,15 @@
         {% block left %}
             {% include "components/_nav.html.twig" with {
                 routes:  [
-                    {name: "dashboard", text: 'Dashboard'},
-                    {name: "charges.index", text: 'Charges'},
-                    {name: "insights.index", text: 'Insights'},
+                    {name: "homepage", text: 'Home'},
                 ]
             } %}
         {% endblock %}
         {% block right %}
             {% include "components/_nav.html.twig" with {
                 routes:  [
-                    {name: "logout", text: 'Sign Out'}
+                    {name: "register", text: 'Register'},
+                    {name: "login", text: 'Sign In'}
                 ]
             } %}
         {% endblock %}

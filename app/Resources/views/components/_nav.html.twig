@@ -1,0 +1,8 @@
+{% set current_path = path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) %}
+{% set current_name = app.request.get('_route') %}
+<ul class="navbar">
+    {% for route in routes|default([]) %}
+        {% set route_path = path(route.name) %}
+        <li class="{% if current_path == route_path or current_name|split('.')|first == route.name|split('.')|first %}active{% endif %}"><a href="{{ route_path  }}" >{{ route.text }}</a></li>
+    {% endfor %}
+</ul>

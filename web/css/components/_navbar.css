@@ -1,0 +1,100 @@
+.nav-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: solid 1px light-dark(var(--color-slate-100), var(--color-slate-800));
+
+    nav.nav {
+        background-color: light-dark(var(--color-white), var(--color-slate-900));
+        display: flex;
+        justify-content: space-between;
+        width: 98%;
+        max-width: 1280px;
+
+        @media screen and (min-width: 800px) {
+            width: 70%;
+        }
+
+        .left {
+            display: flex;
+            .logo {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                margin-right:  1em;
+                .logo-mark {
+                    height: 1.8em;
+                    width: auto;
+                }
+                .logo-img {
+                   display: none;
+                }
+                @media screen and (min-width: 960px) {
+                    .logo-mark {
+                        display: none;
+                    }
+                    .logo-img {
+                        display: inline;
+                        height: 2em;
+                        width: auto;
+                    }
+                }
+            }
+        }
+
+        ul.navbar {
+            column-gap: 0.1rem;
+            display: flex;
+            flex-grow: 1;
+            flex-shrink: 1;
+            flex-basis: 0;
+            justify-content: center;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+
+            li {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                height: 2rem;
+            }
+
+            a {
+                font-size: 0.8em;
+                line-height: 1.8rem;
+                margin: 0.2rem 0.15rem;
+                padding: 0 0.4rem;
+            }
+
+            @media screen and (min-width: 800px) {
+                li {
+                    height: 3rem;
+                }
+                a {
+                    font-size: 1em;
+                    line-height: 2rem;
+                    margin: 0.2rem 0.1rem;
+                    padding: 0 1rem;
+                }
+
+               
+            }
+
+            .active {
+                border-bottom: solid 2px light-dark(var(--color-slate-900), var(--color-slate-50));
+            }
+
+            a:link, a:visited {
+                border-radius: 0.4rem;
+                color: light-dark(var(--color-slate-900), var(--color-slate-100));
+                text-decoration: none;
+            }
+
+            a:hover {
+                background-color: light-dark(#eee, #222);
+            }
+        }
+    }
+}
+

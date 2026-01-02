@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dashboard - Signal Rite{% endblock %}
+
+{% block body %}
+    {% embed "components/_header.html.twig" %}
+        {% block title %}Charges{% endblock %}
+        {% block subline %}List of charges.{% endblock %}
+        {% block actions %}
+            {% embed "components/_button.html.twig" with {variant: "primary"} %}
+                {% block content %}New{% endblock %}
+            {% endembed %}
+        {% endblock %}
+    {% endembed %}
+{% endblock %}

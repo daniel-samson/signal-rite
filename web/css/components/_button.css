@@ -1,0 +1,33 @@
+button {
+    padding: 0.6em 1.8em;
+    background-color: light-dark(#000, #eee);
+    color: light-dark(#eee, #000);
+    border-color: transparent;
+    border-width: 2px;
+    border-radius: 0.5rem;
+    font-size: 0.8em;
+    font-weight: 600;
+    outline: none;
+}
+
+button.variant--blackout {
+
+}
+
+button.variant--primary {
+    background-color: var(--color-indigo-600);
+    border-color: var(--color-indigo-50);
+    color: #eee;
+}
+
+button.variant--secondary {
+    background-color: var(--color-slate-700);
+    border-color: var(--color-slate-500);
+    color: #eee;
+}
+
+button.variant--destructive {
+    background-color: #991b1b;
+    border-color: #ef4444;
+    color: #fef2f2;
+}

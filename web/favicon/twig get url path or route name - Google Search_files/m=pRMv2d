@@ -1,0 +1,8 @@
+"use strict";loaded_g_0(function(_){var window=this;
+_.m("pRMv2d");
+_.tKa(_.Ay,class extends _.uKa{static F(){return{}}constructor(){super();this.places=new Map;this.H=null;this.U=new Set;this.S=new Set;this.P=new Set;this.N=new Set;this.B=!1;this.Na=_.HPa(this.fb,100,this)}j(){return[...this.places.values()]}Z(){this.B=!1;this.places.clear()}l(...a){let b=!1;for(const c of a){const d=this.places.get(c.mid);d?(!d.latLng&&c.latLng&&(d.latLng=c.latLng,b=!0),!d.fprint&&c.fprint&&(d.fprint=c.fprint,b=!0),!d.categoryName&&c.categoryName&&(d.categoryName=c.categoryName,
+b=!0),_.$l&&(a=Object.fromEntries(Object.entries(c).filter(([e,f])=>!d[e]&&(f!==void 0||f!==""))),Object.assign(d,a),b=!0)):(this.places.set(c.mid,Object.assign({},c)),b=!0)}b&&this.Na()}C(a){this.H=a?Object.assign({},a):null;for(const b of this.S)b(this.H)}ba(a){this.S.add(a);this.H&&a(this.H)}ya(a){this.U.add(a);const b=this.j();b.length&&a(b)}ta(a){this.P.add(a);this.B&&this.j().filter(b=>!!b.latLng).length===0&&a()}Jb(a){this.N.add(a);this.B&&a()}J(){this.B=!0;this.j().filter(a=>!!a.latLng).length===
+0&&this.P.forEach(a=>void a());this.N.forEach(a=>void a())}fb(){const a=this.j();if(a.length)for(const b of this.U)b(a)}});
+_.E();
+});
+// Google Inc.

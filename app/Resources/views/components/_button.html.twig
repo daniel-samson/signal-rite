@@ -1,0 +1,7 @@
+{#
+variant: primary / secondary / destructive.
+#}
+<button type="button" class="{% if variant|default(false) %}variant--{{ variant }}{% endif %}">
+    {% block content %}{% endblock %}
+</button>
+

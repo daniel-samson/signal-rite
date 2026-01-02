@@ -1,0 +1,16 @@
+<div class="nav-container">
+    <nav class="nav">
+        <div class="left">
+            <div class="logo">
+                {% block logo %}
+                    {# TODO: naviate to /dashboard when user is authenticated #}
+                    <a href="/">
+                        <img class="logo-img" src="{{ asset('images/signalrite_horizontal.png') }}"/>
+                        <img class="logo-mark" src="{{ asset('images/signalrite_shield.png') }}"/>
+                    </a>
+                {% endblock %}</div>
+            {% block left %}{% endblock %}
+        </div>
+        <div class="right">{% block right %}{% endblock %}</div>
+    </nav>
+</div>
