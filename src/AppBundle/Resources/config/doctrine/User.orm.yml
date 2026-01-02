@@ -1,0 +1,38 @@
+AppBundle\Entity\User:
+    type: entity
+    table: users
+    repositoryClass: AppBundle\Repository\UserRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        email:
+            type: string
+            length: 180
+            unique: true
+        password:
+            type: string
+            length: 255
+        roles:
+            type: json_array
+        enabled:
+            type: boolean
+            options:
+                default: true
+        passwordResetToken:
+            type: string
+            length: 64
+            nullable: true
+            column: password_reset_token
+        passwordResetTokenExpiresAt:
+            type: datetime
+            nullable: true
+            column: password_reset_token_expires_at
+        createdAt:
+            type: datetime
+            column: created_at
+    lifecycleCallbacks:
+        prePersist: [ onPreCreatedAt ]

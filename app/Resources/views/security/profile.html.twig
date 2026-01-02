@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}My Profile - Signal Rite{% endblock %}
+
+{% block body %}
+<div class="auth-container">
+    <div class="auth-header">
+        <h1>My Profile</h1>
+        <p>{{ user.email }}</p>
+    </div>
+
+    {% if success %}
+        <div class="alert alert--success">
+            Your password has been updated successfully.
+        </div>
+    {% endif %}
+
+    <h2 style="font-size: 1.125rem; margin-bottom: 1rem;">Change Password</h2>
+
+    <form class="form" method="post" novalidate>
+        <div class="form-group{% if errors.current_password is defined %} has-error{% endif %}">
+            <label for="current_password">Current Password</label>
+            <input type="password" id="current_password" name="current_password" required>
+            {% if errors.current_password is defined %}
+                <span class="form-error">{{ errors.current_password }}</span>
+            {% endif %}
+        </div>
+
+        <div class="form-group{% if errors.new_password is defined %} has-error{% endif %}">
+            <label for="new_password">New Password</label>
+            <input type="password" id="new_password" name="new_password" required minlength="8">
+            <small class="form-hint">Minimum 8 characters</small>
+            {% if errors.new_password is defined %}
+                <span class="form-error">{{ errors.new_password }}</span>
+            {% endif %}
+        </div>
+
+        <div class="form-group{% if errors.new_password_confirm is defined %} has-error{% endif %}">
+            <label for="new_password_confirm">Confirm New Password</label>
+            <input type="password" id="new_password_confirm" name="new_password_confirm" required>
+            {% if errors.new_password_confirm is defined %}
+                <span class="form-error">{{ errors.new_password_confirm }}</span>
+            {% endif %}
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="variant--primary">Update Password</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

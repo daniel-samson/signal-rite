@@ -1,0 +1,57 @@
+{% extends 'unauthorised.html.twig' %}
+
+{% block title %}Sign In - Signal Rite{% endblock %}
+
+{% block body %}
+<div class="auth-container">
+    <div class="auth-header">
+        <h1>Sign In</h1>
+        <p>Welcome back! Please sign in to your account.</p>
+    </div>
+
+    {% if error %}
+        <div class="alert alert--error">
+            {{ error.messageKey|trans(error.messageData, 'security') }}
+        </div>
+    {% endif %}
+
+    {% for message in app.flashes('success') %}
+        <div class="alert alert--success">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+    <form class="form" method="post">
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="_email" value="{{ last_email }}" required autofocus>
+        </div>
+
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="_password" required>
+        </div>
+
+        <div class="form-group">
+            <label class="form-checkbox">
+                <input type="checkbox" name="_remember_me">
+                <span>Remember me</span>
+            </label>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="variant--primary">Sign In</button>
+        </div>
+
+        <div class="form-footer">
+            <a href="{{ path('forgot_password') }}">Forgot your password?</a>
+        </div>
+
+        <div class="form-footer">
+            Don't have an account? <a href="{{ path('register') }}">Register</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

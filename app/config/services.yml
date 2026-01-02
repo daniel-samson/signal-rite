@@ -69,3 +69,12 @@ services:
     AppBundle\Repository\RuleRepository:
         factory: ['@doctrine.orm.entity_manager', 'getRepository']
         arguments: ['AppBundle\Entity\Rule']
+
+    AppBundle\Repository\UserRepository:
+        factory: ['@doctrine.orm.entity_manager', 'getRepository']
+        arguments: ['AppBundle\Entity\User']
+
+    # Oracle session configuration for date formats
+    AppBundle\EventListener\OracleSessionListener:
+        tags:
+            - { name: doctrine.event_listener, event: postConnect }

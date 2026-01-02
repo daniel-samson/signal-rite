@@ -1,0 +1,15 @@
+AppBundle\Entity\User:
+    properties:
+        email:
+            - NotBlank:
+                message: 'Please enter your email address.'
+            - Email:
+                message: 'Please enter a valid email address.'
+        plainPassword:
+            - NotBlank:
+                message: 'Please enter a password.'
+                groups: [registration]
+            - Length:
+                min: 8
+                minMessage: 'Password must be at least {{ limit }} characters.'
+                groups: [registration, password_change]
