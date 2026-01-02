@@ -7,7 +7,7 @@
         {% block title %}Charges{% endblock %}
         {% block subline %}List of charges.{% endblock %}
         {% block actions %}
-            {% embed "components/_button.html.twig" with {variant: "primary"} %}
+            {% embed "components/_button.html.twig" with {variant: "primary", href: "/charges/new"} %}
                 {% block content %}New{% endblock %}
             {% endembed %}
         {% endblock %}

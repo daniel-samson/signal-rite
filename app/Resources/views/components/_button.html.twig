@@ -1,7 +1,10 @@
 {#
 variant: primary / secondary / destructive.
 #}
-<button type="button" class="{% if variant|default(false) %}variant--{{ variant }}{% endif %}">
+{% set type = type|default('button') %}
+{% if href|default(false) %}<a href="{{ href }}">{% endif %}
+<button type="button" class="{% if variant|default(false) %}variant--{{ variant }}{% endif %}" type="{{ type }}">
     {% block content %}{% endblock %}
 </button>
+{% if href|default(false) %}</a>{% endif %}
 
